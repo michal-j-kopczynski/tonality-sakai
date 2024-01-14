@@ -21,8 +21,14 @@ export class AppMenuComponent implements OnInit {
                 ]
             },
             {
-                label: 'UI Components',
+                label: 'Menu',
                 items: [
+                    
+                    { label: 'Upload audio files', icon: 'pi pi-fw pi-file', routerLink: ['/uikit/file'] },
+                    { label: 'Create notes', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
+                    { label: 'Transcriptions', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/uikit/charts'] },
+                    { label: 'Advanced options', icon: 'pi pi-fw pi-list', routerLink: ['/uikit/list'] },
+                    /* 
                     { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
                     { label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
                     { label: 'Float Label', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/floatlabel'] },
@@ -39,9 +45,13 @@ export class AppMenuComponent implements OnInit {
                     { label: 'File', icon: 'pi pi-fw pi-file', routerLink: ['/uikit/file'] },
                     { label: 'Chart', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/uikit/charts'] },
                     { label: 'Misc', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/misc'] }
+                    */
                 ]
             },
+            
+            /*
             {
+
                 label: 'Prime Blocks',
                 items: [
                     { label: 'Free Blocks', icon: 'pi pi-fw pi-eye', routerLink: ['/blocks'], badge: 'NEW' },
@@ -149,15 +159,14 @@ export class AppMenuComponent implements OnInit {
                     }
                 ]
             },
+            */
             {
                 label: 'Get Started',
                 items: [
                     {
                         label: 'Documentation', icon: 'pi pi-fw pi-question', routerLink: ['/documentation']
                     },
-                    {
-                        label: 'View Source', icon: 'pi pi-fw pi-search', url: ['https://github.com/primefaces/sakai-ng'], target: '_blank'
-                    }
+                    
                 ]
             }
         ];
