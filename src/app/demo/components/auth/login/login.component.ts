@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
+import { LogService } from '../../../../services/log.service';
 
 @Component({
     selector: 'app-login',
@@ -19,5 +20,12 @@ export class LoginComponent {
 
     password!: string;
 
-    constructor(public layoutService: LayoutService) { }
+    constructor(public layoutService: LayoutService, private logService: LogService) 
+    { 
+        this.logToConsole();
+        this.logToConsole();
+    }
+    logToConsole(): void {
+        this.logService.logToConsole('Service is working, hell yeah!');
+      }
 }
