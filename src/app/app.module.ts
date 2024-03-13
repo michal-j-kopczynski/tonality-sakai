@@ -13,6 +13,8 @@ import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
 import { LogService } from './services/log.service';
 import { AuthGuard } from './auth.guard.spec';
+import { BrowserModule } from '@angular/platform-browser'
+import { CommonModule } from '@angular/common';
 
 @NgModule({
     declarations: [
@@ -20,7 +22,9 @@ import { AuthGuard } from './auth.guard.spec';
     ],
     imports: [
         AppRoutingModule,
-        AppLayoutModule
+        AppLayoutModule,
+        BrowserModule,
+        CommonModule,
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },

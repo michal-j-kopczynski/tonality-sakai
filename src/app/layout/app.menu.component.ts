@@ -28,7 +28,9 @@ export class AppMenuComponent implements OnInit {
                     { label: 'Create notes', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
                     { label: 'Transcriptions', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/uikit/charts'] },
                     { label: 'Advanced options', icon: 'pi pi-fw pi-list', routerLink: ['/uikit/list'] },
-                    /* 
+                    { label: 'Testing playground', icon: 'pi pi-fw pi-list', routerLink: ['/landing'] },
+                    { label: 'Uploaded files', icon: 'pi pi-fw pi-list', routerLink: ['/file-list'] },
+                    
                     { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
                     { label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
                     { label: 'Float Label', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/floatlabel'] },
@@ -45,11 +47,11 @@ export class AppMenuComponent implements OnInit {
                     { label: 'File', icon: 'pi pi-fw pi-file', routerLink: ['/uikit/file'] },
                     { label: 'Chart', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/uikit/charts'] },
                     { label: 'Misc', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/misc'] }
-                    */
+                    
                 ]
             },
             
-            /*
+            
             {
 
                 label: 'Prime Blocks',
@@ -159,7 +161,7 @@ export class AppMenuComponent implements OnInit {
                     }
                 ]
             },
-            */
+            
             {
                 label: 'Get Started',
                 items: [

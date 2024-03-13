@@ -5,6 +5,8 @@ import { LogService } from 'src/app/services/log.service';
 
 import { AuthService } from 'src/app/services/auth.service';
 
+import { UploadService } from 'src/app/services/upload.service';
+
 @Component({
     selector: 'app-landing',
     template: `
@@ -19,13 +21,19 @@ import { AuthService } from 'src/app/services/auth.service';
       <button (click)="executeIfLoggedIn()">Execute If Logged In</button>
       <button (click)="logout()">Logout</button>
     </div>
+
+
+    <!-- File upload input and button -->
+  <input type="file" #fileInput>
+  <button (click)="uploadFile(fileInput)">Upload File</button>
+
     </div>
   `,
     //templateUrl: './landing.component.html'
 })
 export class LandingComponent {
 
-    constructor(public layoutService: LayoutService, public router: Router, private logService: LogService, private authService: AuthService) {
+    constructor(public layoutService: LayoutService, public router: Router, private logService: LogService, private authService: AuthService, private uploadService: UploadService) {
         this.logToConsole();
        
       }
@@ -41,13 +49,13 @@ export class LandingComponent {
       }
     
       signup(): void {
-        this.authService.signup('adam', 'Pass1234!', 'adam@mail.com').subscribe(response => {
+        this.authService.signup('adrian', 'Pass1234!', 'adam@mail.com').subscribe(response => {
           console.log(response);
         });
       }
     
       login(): void {
-        this.authService.login('adam', 'Pass1234!').subscribe(response => {
+        this.authService.login('adam33', 'Pass1234!').subscribe(response => {
           console.log(response);
         });
       }
@@ -79,5 +87,22 @@ export class LandingComponent {
         console.log("logged out!")
       }
 
+      uploadFile(input: HTMLInputElement): void {
+        const file = input.files?.[0];
+        if (file) {
+          this.uploadService.uploadFile(file).subscribe(
+            response => {
+              console.log('File uploaded successfully:', response);
+              // Handle any further logic after successful upload
+            },
+            error => {
+              console.error('Error uploading file:', error);
+              // Handle error cases
+            }
+          );
+        } else {
+          console.error('No file selected');
+        }
+      }
 
 }
