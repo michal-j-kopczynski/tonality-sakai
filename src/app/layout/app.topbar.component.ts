@@ -17,4 +17,12 @@ export class AppTopBarComponent {
     @ViewChild('topbarmenu') menu!: ElementRef;
 
     constructor(public layoutService: LayoutService) { }
+
+    showProfileOptions() {
+        this.layoutService.state.profileSidebarVisible = !this.layoutService.state.profileSidebarVisible;
+    }
+
+    logout() {
+        // Implement logout logic here
+    }
 }
