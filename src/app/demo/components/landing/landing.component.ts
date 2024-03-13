@@ -55,7 +55,7 @@ export class LandingComponent {
       }
     
       login(): void {
-        this.authService.login('adam33', 'Pass1234!').subscribe(response => {
+        this.authService.login('adrian', 'Pass1234!').subscribe(response => {
           console.log(response);
         });
       }

@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
-import { LogService } from '../../../../services/log.service';
+import { LogService } from 'src/app/services/log.service';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
-    selector: 'app-login',
-    templateUrl: './login.component.html',
+    selector: 'app-signin',
+    templateUrl: './signin.component.html',
     styles: [`
         :host ::ng-deep .pi-eye,
         :host ::ng-deep .pi-eye-slash {
@@ -16,12 +16,13 @@ import { AuthService } from 'src/app/services/auth.service';
         }
     `]
 })
-export class LoginComponent {
+export class SigninComponent {
 
     valCheck: string[] = ['remember'];
     email: string = '';
+    username: string = '';
     password: string = '';
-    loginError: string | null = null;
+    signupError: string | null = null;
 
     constructor(public layoutService: LayoutService, private logService: LogService, private authService: AuthService, private router: Router) 
     { 
@@ -32,17 +33,18 @@ export class LoginComponent {
         this.logService.logToConsole('Service is working, hell yeah!');
     }
 
-    login(): void {
-        this.authService.login(this.email, this.password).subscribe(
+    signup(): void {
+        this.authService.signup(this.username, this.password, this.email).subscribe(
             response => {
                 console.log(response);
-                // Redirect user to home page on successful login
+                // Redirect user to home page or handle successful registration
+                // For example, navigate to a success page or display a success message
                 this.router.navigate(['/']);
             },
             error => {
                 console.error(error);
-            // Handle login error (e.g., display error message to user)
-            this.loginError = 'Sorry, your password was incorrect. Please double-check your password.';
+                // Handle signup error (e.g., display error message to user)
+                this.signupError = 'Error occurred during registration. Please try again later.';
             }
         );
     }
