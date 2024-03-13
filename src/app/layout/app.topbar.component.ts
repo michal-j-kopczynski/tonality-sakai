@@ -1,6 +1,9 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { LayoutService } from "./service/app.layout.service";
+import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
+
 
 @Component({
     selector: 'app-topbar',
@@ -16,13 +19,19 @@ export class AppTopBarComponent {
 
     @ViewChild('topbarmenu') menu!: ElementRef;
 
-    constructor(public layoutService: LayoutService) { }
+    constructor(public layoutService: LayoutService, private authService: AuthService, public router: Router) { }
 
     showProfileOptions() {
         this.layoutService.state.profileSidebarVisible = !this.layoutService.state.profileSidebarVisible;
     }
 
+    loadprofile() {
+        this.router.navigate(["/userprofile"]);
+    }
+
     logout() {
-        // Implement logout logic here
+        this.authService.logout();
+        console.log("logged out!")
+        this.router.navigate(['auth/login']);
     }
 }

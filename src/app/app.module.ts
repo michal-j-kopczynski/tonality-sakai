@@ -15,6 +15,7 @@ import { LogService } from './services/log.service';
 import { AuthGuard } from './auth.guard.spec';
 import { BrowserModule } from '@angular/platform-browser'
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
     declarations: [
@@ -25,6 +26,7 @@ import { CommonModule } from '@angular/common';
         AppLayoutModule,
         BrowserModule,
         CommonModule,
+        HttpClientModule,
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },

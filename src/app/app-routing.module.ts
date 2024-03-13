@@ -4,7 +4,8 @@ import { NotfoundComponent } from './demo/components/notfound/notfound.component
 import { AppLayoutComponent } from "./layout/app.layout.component";
 import { AuthGuard } from './auth.guard.spec';
 import { FileListComponent } from './demo/components/filelist/filelist.component';
-
+import { UserprofileModule } from './demo/components/userprofile/userprofile/userprofile.module';
+import { UserprofileComponent } from './demo/components/userprofile/userprofile/userprofile.component';
 //import { FileListModule } from './demo/components/filelist/filelist.module'; // Import FileListModule
 @NgModule({
     imports: [
@@ -20,10 +21,12 @@ import { FileListComponent } from './demo/components/filelist/filelist.component
                     { path: 'pages', loadChildren: () => import('./demo/components/pages/pages.module').then(m => m.PagesModule) },
                     //{ path: 'file-list', component: FileListComponent },
                     { path: 'file-list', loadChildren: () => import('./demo/components/filelist/filelist.module').then(m => m.FileListModule) },
+                    
                 ]
             },
             { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
             { path: 'landing', loadChildren: () => import('./demo/components/landing/landing.module').then(m => m.LandingModule) },
+            { path: 'userprofile', loadChildren: () => import('./demo/components/userprofile/userprofile/userprofile.module').then(m => m.UserprofileModule) },
             { path: 'notfound', component: NotfoundComponent },
             { path: '**', redirectTo: '/notfound' },
         ], { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled', onSameUrlNavigation: 'reload' })

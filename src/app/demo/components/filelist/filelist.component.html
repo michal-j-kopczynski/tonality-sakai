@@ -1,6 +1,70 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center mb-4">
+                <h5 class="m-0">User Audio Files</h5>
+                <span class="flex items-center">
+                    <i class="pi pi-search mr-1"></i>    
+                    <input pInputText type="text" (input)="onGlobalFilter($event.target.value)" placeholder="Search..." class="w-full lg:w-96"/>
+                </span>
+            </div>
+            <p-table [value]="filteredAudioFiles" responsiveLayout="scroll" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>ID</th>
+                        <th>User</th>
+                        <th>File</th>
+                        <th>Uploaded At</th>
+                        <th>Action</th> <!-- Add this column for edit and delete action -->
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-audioFile>
+                    <tr>
+                        <td>{{ audioFile.id }}</td>
+                        <td>{{ audioFile.user }}</td>
+                        <td>{{ audioFile.file }}</td>
+                        <td>{{ audioFile.uploaded_at }}</td>
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-play" class="p-button-rounded p-button-success mr-2" (click)="playAudio(audioFile)"></button>
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editAudioFile(audioFile)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteAudioFile(audioFile.id)"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            
+            <!-- Dialog for editing audio file details -->
+            <!-- Dialog for editing audio file details -->
+<p-dialog [(visible)]="editDialogVisible" [style]="{width: '450px'}" header="Product Details" [modal]="true" class="p-fluid">
+    <ng-template pTemplate="content">
+        <!-- Replace the content with fields for editing audio file details -->
+        <div class="field">
+            <label for="fileName">File Name</label>
+            <input type="text" pInputText id="fileName" [(ngModel)]="selectedAudioFile.file" required autofocus />
+        </div>
+        <!-- Add more fields for editing audio file details as needed -->
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideEditDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveAudioFile()"></button>
+    </ng-template>
+</p-dialog>
 
 
+<!-- Dialog for playing audio file -->
+<p-dialog [(visible)]="playDialogVisible" [style]="{width: '80vh', 'max-height': '80vh'}" header="Play Audio" [modal]="true" class="p-fluid">
 
-<ul>
-    <li *ngFor="let item of fileList">{{ item }}</li>
-</ul>
+    <ng-template pTemplate="content">
+        <app-audio-player></app-audio-player>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Close" icon="pi pi-times" class="p-button-text" (click)="hidePlayDialog()"></button>
+    </ng-template>
+</p-dialog>
+
+
+        </div>
+    </div>
+</div>
