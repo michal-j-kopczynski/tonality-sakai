@@ -42,4 +42,9 @@ export class UserFileService {
     // Make HTTP DELETE request to delete the file
     return this.http.delete(url, { headers });
   }
+
+  getAudioFile(filename: string) {
+    return this.http.get(`http://localhost:8000/api/get_audio_file/${filename}`, { responseType: 'blob' });
+  }
+
 }

@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class TranscriptionService {
   private apiUrl = 'http://127.0.0.1:8000/api/generate_transcription/';
+  private transcriptionListUrl = 'http://127.0.0.1:8000/api/get_user_transcriptions/';
 
   constructor(private http: HttpClient) {}
 
@@ -27,5 +28,19 @@ export class TranscriptionService {
 
     // Make POST request to the Django API
     return this.http.post(this.apiUrl, requestBody, { headers });
+  }
+
+  getTranscriptionList(): Observable<string[]> {
+    // Get token from localStorage
+    const authToken = localStorage.getItem('authToken');
+    if (!authToken) {
+      throw new Error('No authentication token available.');
+    }
+
+    // Include token in request headers
+    const headers = { Authorization: `Token ${authToken}` };
+
+    // Make HTTP GET request to fetch file names
+    return this.http.get<string[]>(this.transcriptionListUrl, { headers });
   }
 }

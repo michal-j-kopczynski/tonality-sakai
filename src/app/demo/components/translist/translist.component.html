@@ -1,0 +1,110 @@
+<form (ngSubmit)="generateTranscription(transcriptionName)">
+    <div class="form-group">
+        <label for="audioFile">Select Audio File:</label>
+        <select id="audioFile" class="form-control" [(ngModel)]="selectedAudioFileName" name="audioFile" required>
+            <option *ngFor="let audioFile of audioFiles" [value]="audioFile.file">{{ extractFileName(audioFile.file) }}</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="transcriptionName">Transcription Name:</label>
+        <input type="text" id="transcriptionName" class="form-control" [(ngModel)]="transcriptionName" name="transcriptionName" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Generate</button>
+</form>
+
+
+
+
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center mb-4">
+                <h5 class="m-0">User transcriptions</h5>
+                <span class="flex items-center">
+                    <i class="pi pi-search mr-1"></i>    
+                    <input pInputText type="text" (input)="onGlobalFilter($event.target.value)" placeholder="Search..." class="w-full lg:w-96"/>
+                </span>
+            </div>
+            <p-table [value]="filteredTransData" responsiveLayout="scroll" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>ID</th>
+                        <!-- <th>User</th> -->
+                        <th pSortableColumn="trans_filename">Transcription Name <p-sortIcon field="Transcriptionname"></p-sortIcon></th>
+                        <th pSortableColumn="filename">File <p-sortIcon field="file"></p-sortIcon></th>
+                        <th pSortableColumn="uploaded_at">Uploaded At <p-sortIcon field="uploaded_at"></p-sortIcon></th>
+                        <th pSortableColumn="transcript">Transcript<p-sortIcon field="transcript"></p-sortIcon></th>
+                        <th>Action</th> <!-- Add this column for edit and delete action -->
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-transcription>
+                    <tr>
+                        <td>{{ transcription.id }}</td>
+                        <td>{{ transcription.trans_filename }}</td>
+                        <!-- <td>{{ audioFile.user }}</td> -->
+                        <td>{{ extractFileName(transcription.filename) }}</td>
+                        <td>{{ transcription.uploaded_at }}</td>
+                        <td>{{ transcription.transcript | slice:0:200 }}</td>
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-play" class="p-button-rounded p-button-success mr-2" (click)="playAudio(audioFile, transcription)"></button>
+                                <!---<button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editAudioFile(audioFile)"></button> -->
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteAudioFile(audioFile.file)"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            
+            
+            <!-- Dialog for editing audio file details -->
+<p-dialog [(visible)]="editDialogVisible" [style]="{width: '450px'}" header="Product Details" [modal]="true" class="p-fluid">
+    <ng-template pTemplate="content">
+        <!-- Replace the content with fields for editing audio file details -->
+        <div class="field">
+            <label for="fileName">File Name</label>
+            <input type="text" pInputText id="fileName" [(ngModel)]="selectedAudioFile.file" required autofocus />
+        </div>
+        <!-- Add more fields for editing audio file details as needed -->
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideEditDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveAudioFile()"></button>
+    </ng-template>
+</p-dialog>
+
+
+<!-- Dialog for playing audio file -->
+<p-dialog [(visible)]="playDialogVisible" [style]="{width: '80vh', 'max-height': '80vh'}" header="Play Audio" [modal]="true" class="p-fluid">
+
+    <ng-template pTemplate="content">
+        <app-audio-player [audioUrl]="getAudioUrl()"></app-audio-player>
+        
+        <!-- Move the card with p-panel here -->
+        <div class="card">
+            <p-panel header="Transkrypcja" [toggleable]="true" class="line-height-3 m-0">
+                <p>{{ getCurrentTrans() }}</p>
+            </p-panel>
+        </div>
+    </ng-template>
+
+    <!-- Remove the card with p-panel from the outer content -->
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Close" icon="pi pi-times" class="p-button-text" (click)="hidePlayDialog()"></button>
+    </ng-template>
+</p-dialog>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+<!--
+<div *ngFor="let dataItem of transData">
+    <p>{{ dataItem.uploaded_at }}</p>
+    <p>{{ dataItem.filename }}</p>
+    <p>{{ dataItem.user }}</p>
+  </div>
+  -->

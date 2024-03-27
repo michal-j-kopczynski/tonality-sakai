@@ -30,7 +30,8 @@ export class AppMenuComponent implements OnInit {
                     { label: 'Advanced options', icon: 'pi pi-fw pi-list', routerLink: ['/uikit/list'] },
                     { label: 'Testing playground', icon: 'pi pi-fw pi-list', routerLink: ['/landing'] },
                     { label: 'Uploaded files', icon: 'pi pi-fw pi-list', routerLink: ['/file-list'] },
-                    
+                    { label: 'Transcriptions & Notes', icon: 'pi pi-fw pi-list', routerLink: ['/transcription-list'] },
+
                     { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
                     { label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
                     { label: 'Float Label', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/floatlabel'] },
