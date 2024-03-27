@@ -29,7 +29,7 @@ import { UploadService } from 'src/app/services/upload.service';
 
     </div>
   `,
-    //templateUrl: './landing.component.html'
+    templateUrl: './landing.component.html'
 })
 export class LandingComponent {
 
