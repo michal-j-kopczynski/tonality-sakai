@@ -12,23 +12,23 @@
                 <ng-template pTemplate="header">
                     <tr>
                         <th>ID</th>
-                        <th>User</th>
-                        <th>File</th>
-                        <th>Uploaded At</th>
+                        <!-- <th>User</th> -->
+                        <th pSortableColumn="file">File <p-sortIcon field="file"></p-sortIcon></th>
+                        <th pSortableColumn="uploaded_at">Uploaded At <p-sortIcon field="uploaded_at"></p-sortIcon></th>
                         <th>Action</th> <!-- Add this column for edit and delete action -->
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-audioFile>
                     <tr>
                         <td>{{ audioFile.id }}</td>
-                        <td>{{ audioFile.user }}</td>
-                        <td>{{ audioFile.file }}</td>
+                        <!-- <td>{{ audioFile.user }}</td> -->
+                        <td>{{ extractFileName(audioFile.file) }}</td>
                         <td>{{ audioFile.uploaded_at }}</td>
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-play" class="p-button-rounded p-button-success mr-2" (click)="playAudio(audioFile)"></button>
                                 <!---<button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editAudioFile(audioFile)"></button> -->
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteAudioFile(audioFile.id)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteAudioFile(audioFile.file)"></button>
                             </div>
                         </td>
                     </tr>

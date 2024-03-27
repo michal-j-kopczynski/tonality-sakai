@@ -30,6 +30,13 @@ export class FileListComponent implements OnInit {
         );
     }
 
+    extractFileName(fullPath: string): string {
+        // Split the full path by '/'
+        const parts = fullPath.split('/');
+        // Return the last part which is the filename
+        return parts[parts.length - 1];
+    }
+
     onGlobalFilter(filterValue: string) {
         filterValue = filterValue.trim().toLowerCase();
         this.filteredAudioFiles = this.audioFiles.filter((audioFile: any) =>
@@ -41,19 +48,18 @@ export class FileListComponent implements OnInit {
     }
 
     deleteAudioFile(fileName: string): void {
-        // Call your delete service method here passing the file name
-        // For example:
-        // this.userFileService.deleteFileByName(fileName).subscribe(
-        //     () => {
-        //         // On success, remove the file from the audioFiles array
-        //         this.audioFiles = this.audioFiles.filter(file => file.file !== fileName);
-        //         // Also update the filteredAudioFiles array if necessary
-        //         this.filteredAudioFiles = this.filteredAudioFiles.filter(file => file.file !== fileName);
-        //     },
-        //     (error) => {
-        //         console.error('Error deleting audio file:', error);
-        //     }
-        // );
+         
+         this.userFileService.deleteFileByName(fileName).subscribe(
+             () => {
+                 // On success, remove the file from the audioFiles array
+                 this.audioFiles = this.audioFiles.filter(file => file.file !== fileName);
+                 // Also update the filteredAudioFiles array if necessary
+                 this.filteredAudioFiles = this.filteredAudioFiles.filter(file => file.file !== fileName);
+             },
+             (error) => {
+                 console.error('Error deleting audio file:', error);
+             }
+         );
     }
 
     playAudio(audioFile: any) {
