@@ -16,6 +16,7 @@ import { AuthGuard } from './auth.guard.spec';
 import { BrowserModule } from '@angular/platform-browser'
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
     declarations: [
@@ -27,6 +28,7 @@ import { HttpClientModule } from '@angular/common/http';
         BrowserModule,
         CommonModule,
         HttpClientModule,
+        BrowserAnimationsModule,
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },

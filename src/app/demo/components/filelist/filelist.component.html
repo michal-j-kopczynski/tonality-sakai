@@ -27,7 +27,7 @@
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-play" class="p-button-rounded p-button-success mr-2" (click)="playAudio(audioFile)"></button>
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editAudioFile(audioFile)"></button>
+                                <!---<button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editAudioFile(audioFile)"></button> -->
                                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteAudioFile(audioFile.id)"></button>
                             </div>
                         </td>
@@ -35,7 +35,7 @@
                 </ng-template>
             </p-table>
             
-            <!-- Dialog for editing audio file details -->
+            
             <!-- Dialog for editing audio file details -->
 <p-dialog [(visible)]="editDialogVisible" [style]="{width: '450px'}" header="Product Details" [modal]="true" class="p-fluid">
     <ng-template pTemplate="content">

@@ -7,6 +7,8 @@ import { AuthService } from 'src/app/services/auth.service';
 
 import { UploadService } from 'src/app/services/upload.service';
 
+import { TranscriptionService } from 'src/app/services/transcription.service';
+
 @Component({
     selector: 'app-landing',
     template: `
@@ -15,7 +17,7 @@ import { UploadService } from 'src/app/services/upload.service';
       <button (click)="signup()">Signup</button>
       <button (click)="login()">Login</button>
       <button (click)="testToken()">Test Token</button>
-
+      <button (click)="testTranscription()">Test Transcription</button>
       <div>
       <h2>My Component - further testing</h2>
       <button (click)="executeIfLoggedIn()">Execute If Logged In</button>
@@ -33,7 +35,7 @@ import { UploadService } from 'src/app/services/upload.service';
 })
 export class LandingComponent {
 
-    constructor(public layoutService: LayoutService, public router: Router, private logService: LogService, private authService: AuthService, private uploadService: UploadService) {
+    constructor(public layoutService: LayoutService, public router: Router, private logService: LogService, private authService: AuthService, private uploadService: UploadService, private transcriptionService: TranscriptionService) {
         this.logToConsole();
        
       }
@@ -105,4 +107,17 @@ export class LandingComponent {
         }
       }
 
+      testTranscription(): void {
+        // Call the transcription service method here
+        this.transcriptionService.generateTranscription('female.wav', 'female_przemowa').subscribe(
+          (response) => {
+            console.log('Transcription generated successfully:', response);
+            // Handle any further logic after successful transcription
+          },
+          (error) => {
+            console.error('Error generating transcription:', error);
+            // Handle error cases
+          }
+        );
+      }
 }
