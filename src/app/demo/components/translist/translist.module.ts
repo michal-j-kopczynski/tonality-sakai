@@ -25,8 +25,9 @@ import { PanelModule } from 'primeng/panel';
         FormsModule,
         MenuModule,
         PanelModule,
+        
     ],
-    declarations: [TransListComponent, FileNamePipe],
+    declarations: [TransListComponent],
     providers: [
         UserFileService
     ]

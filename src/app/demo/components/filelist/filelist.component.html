@@ -57,7 +57,7 @@
 <p-dialog [(visible)]="playDialogVisible" [style]="{width: '80vh', 'max-height': '80vh'}" header="Play Audio" [modal]="true" class="p-fluid">
 
     <ng-template pTemplate="content">
-        <app-audio-player></app-audio-player>
+        <app-audio-player [audioUrl]="getAudioUrl()"></app-audio-player>
     </ng-template>
     <ng-template pTemplate="footer">
         <button pButton pRipple label="Close" icon="pi pi-times" class="p-button-text" (click)="hidePlayDialog()"></button>

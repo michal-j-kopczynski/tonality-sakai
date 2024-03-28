@@ -80,4 +80,10 @@ export class FileListComponent implements OnInit {
     hideEditDialog() {
         this.editDialogVisible = false; // Hide the edit dialog
     }
+
+    getAudioUrl(): string {
+        // Assuming the 'filename' property holds the URL
+        return this.extractFileName(this.selectedAudioFile.file);
+    }
+
 }
