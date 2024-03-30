@@ -49,7 +49,7 @@
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-play" class="p-button-rounded p-button-success mr-2" (click)="playAudio(audioFile, transcription)"></button>
                                 <!---<button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="editAudioFile(audioFile)"></button> -->
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteAudioFile(audioFile.file)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteTranscription(transcription.trans_filename, transcription.uploaded_at)"></button>
                             </div>
                         </td>
                     </tr>

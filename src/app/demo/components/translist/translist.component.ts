@@ -104,14 +104,14 @@ export class TransListComponent implements OnInit {
             transcription.transcript.toLowerCase().includes(filterValue) 
         );
     }
-    deleteAudioFile(fileName: string): void {
+    deleteTranscription(transcriptionName: string, uploaded_at:string): void {
          
-         this.userFileService.deleteFileByName(fileName).subscribe(
+         this.transcriptionService.deleteTranscriptionByName(transcriptionName, uploaded_at).subscribe(
              () => {
                  // On success, remove the file from the audioFiles array
-                 this.audioFiles = this.audioFiles.filter(file => file.file !== fileName);
+                 this.transData = this.transData.filter(file => file.uploaded_at !== uploaded_at);
                  // Also update the filteredAudioFiles array if necessary
-                 this.filteredAudioFiles = this.filteredAudioFiles.filter(file => file.file !== fileName);
+                 this.filteredTransData = this.filteredTransData.filter(file => file.uploaded_at !== uploaded_at);
              },
              (error) => {
                  console.error('Error deleting audio file:', error);
