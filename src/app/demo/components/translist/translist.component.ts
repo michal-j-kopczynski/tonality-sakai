@@ -2,11 +2,14 @@ import { Component, OnInit, Input} from '@angular/core';
 import { UserFileService } from 'src/app/services/user-file.service';
 import { TranscriptionService } from 'src/app/services/transcription.service';
 import { MenuItem } from 'primeng/api';
-
+import { TaskService } from 'src/app/services/task.service';
+import { Message, MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-trans-list',
     templateUrl: './translist.component.html',
+    providers: [MessageService],
+    
 })
 export class TransListComponent implements OnInit {
     audioFiles: any[] = [];
@@ -21,10 +24,17 @@ export class TransListComponent implements OnInit {
     selectedAudioFileName: string = ''; // Property to hold the selected audio file name for transcription
     transcriptionName: string = ''; // Define the transcriptionName property
     
+    //crud
     items: MenuItem[] = [];
     cardMenu: MenuItem[] = [];
+    //popup messages
+    msgs: Message[] = [];
 
-    constructor(private userFileService: UserFileService, private transcriptionService: TranscriptionService) { 
+
+    constructor(private userFileService: UserFileService, 
+        private transcriptionService: TranscriptionService,
+        private taskService: TaskService,
+        private service: MessageService) { 
         this.selectedTranscription = ""
     }
 
@@ -146,13 +156,32 @@ export class TransListComponent implements OnInit {
             console.error('1');
             console.error(this.selectedAudioFileName)
             console.error(this.extractFileName(this.selectedAudioFileName))
+            this.showInfoViaToast()
             
             
                 // Call the transcription service method to generate transcription
                 this.transcriptionService.generateTranscription(this.extractFileName(this.selectedAudioFileName), transcriptionName).subscribe(
                     (response) => {
                         console.log('Transcription generated successfully:', response);
-                        // Handle any further logic after successful transcription
+                        // Handle any further logic after successful synchronous response
+                        this.taskService.setTaskId(response.task_id);
+                        console.log(this.taskService.taskId);
+                        this.taskService.pollTaskStatus().subscribe(
+                            (taskStatusResponse) => {
+                                console.log('Task status response:', taskStatusResponse);
+                                // Handle task status response here
+                                if(taskStatusResponse.status == "completed")
+                                {
+                                    console.log('Loading message popup...');
+                                    this.showSuccessViaToast();
+                                    this.fetchTranscriptions();
+                                }
+                            },
+                            (error) => {
+                                console.error('Error polling task status:', error);
+                                // Handle error cases
+                            }
+                        );
                     },
                     (error) => {
                         console.error('Error generating transcription:', error);
@@ -162,6 +191,7 @@ export class TransListComponent implements OnInit {
             
         } else {
             console.error('No audio file selected or transcription name is empty');
+            this.showErrorViaToast();
         }
     }
 
@@ -173,5 +203,18 @@ export class TransListComponent implements OnInit {
     getCurrentTrans(): string {
         // Assuming the 'filename' property holds the URL
         return this.selectedTranscription.transcript;
+    }
+
+    // asynchronous messages
+    showInfoViaToast() {
+        this.service.add({ key: 'tst', severity: 'info', summary: 'Info Message', detail: 'Your transrciption is being processed...', life: 6500 });
+    }
+
+    showErrorViaToast() {
+        this.service.add({ key: 'tst', severity: 'error', summary: 'Error Message', detail: 'No audio file selected or transcription name is empty', life: 6500 });
+    }
+
+    showSuccessViaToast() {
+        this.service.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'Your transcription is ready!', life: 6500 });
     }
 }

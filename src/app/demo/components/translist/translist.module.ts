@@ -12,6 +12,11 @@ import { AudioModule } from 'src/app/components/my-component/AudioPlayerComponen
 import { FormsModule } from '@angular/forms';
 import { MenuModule } from 'primeng/menu';
 import { PanelModule } from 'primeng/panel';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { InputTextModule } from 'primeng/inputtext';
 
 @NgModule({
     imports: [
@@ -25,11 +30,16 @@ import { PanelModule } from 'primeng/panel';
         FormsModule,
         MenuModule,
         PanelModule,
+        MessagesModule,
+        MessageModule,
+        ToastModule,
+        InputTextModule,
         
     ],
     declarations: [TransListComponent],
     providers: [
-        UserFileService
+        UserFileService,
+        MessageService
     ]
 })
 export class TransListModule { }

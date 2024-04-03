@@ -9,10 +9,12 @@
         <label for="transcriptionName">Transcription Name:</label>
         <input type="text" id="transcriptionName" class="form-control" [(ngModel)]="transcriptionName" name="transcriptionName" required>
     </div>
-    <button type="submit" class="btn btn-primary">Generate</button>
+    <button type="submit" pButton pRipple>Generate</button>
 </form>
 
 
+<p-toast key="tst"></p-toast>
+       
 
 
 <div class="grid">
@@ -84,6 +86,7 @@
         <div class="card">
             <p-panel header="Transkrypcja" [toggleable]="true" class="line-height-3 m-0">
                 <p>{{ getCurrentTrans() }}</p>
+
             </p-panel>
         </div>
     </ng-template>
