@@ -122,6 +122,7 @@ export class TransListComponent implements OnInit {
                  this.transData = this.transData.filter(file => file.uploaded_at !== uploaded_at);
                  // Also update the filteredAudioFiles array if necessary
                  this.filteredTransData = this.filteredTransData.filter(file => file.uploaded_at !== uploaded_at);
+                 this.showWarnViaToast();
              },
              (error) => {
                  console.error('Error deleting audio file:', error);
@@ -216,5 +217,8 @@ export class TransListComponent implements OnInit {
 
     showSuccessViaToast() {
         this.service.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'Your transcription is ready!', life: 6500 });
+    }
+    showWarnViaToast() {
+        this.service.add({ key: 'tst', severity: 'warn', summary: 'Warn Message', detail: 'Succesfully deleted transcription' });
     }
 }
