@@ -17,6 +17,9 @@ import { MessageModule } from 'primeng/message';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { InputTextModule } from 'primeng/inputtext';
+import { FileUploadModule } from 'primeng/fileupload';
+import { DropdownModule } from "primeng/dropdown";
+
 
 @NgModule({
     imports: [
@@ -34,6 +37,9 @@ import { InputTextModule } from 'primeng/inputtext';
         MessageModule,
         ToastModule,
         InputTextModule,
+        FileUploadModule,
+        DropdownModule,
+        
         
     ],
     declarations: [TransListComponent],

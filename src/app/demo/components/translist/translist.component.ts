@@ -4,6 +4,7 @@ import { TranscriptionService } from 'src/app/services/transcription.service';
 import { MenuItem } from 'primeng/api';
 import { TaskService } from 'src/app/services/task.service';
 import { Message, MessageService } from 'primeng/api';
+import { UploadService } from 'src/app/services/upload.service';
 
 @Component({
     selector: 'app-trans-list',
@@ -29,12 +30,23 @@ export class TransListComponent implements OnInit {
     cardMenu: MenuItem[] = [];
     //popup messages
     msgs: Message[] = [];
+    // uploading files
+    uploadedFiles: any[] = [];
+    uploadSuccess = false;
+
+    //language of the transcription
+    // Define an array to hold the language options
+    languageOptions = ['pl', 'en'];
+
+    // Property to store the selected language
+    selectedLanguage: string;
 
 
     constructor(private userFileService: UserFileService, 
         private transcriptionService: TranscriptionService,
         private taskService: TaskService,
-        private service: MessageService) { 
+        private service: MessageService,
+        private uploadService: UploadService) { 
         this.selectedTranscription = ""
     }
 
@@ -63,7 +75,8 @@ export class TransListComponent implements OnInit {
     fetchAudioFiles(): void {
         this.userFileService.getFileList().subscribe(
             (files: any[]) => {
-                this.audioFiles = files;
+                //this.audioFiles = files;
+                this.audioFiles = files.map(file => this.extractFileName(file.file));
                 this.filteredAudioFiles = files;
             },
             (error) => {
@@ -156,12 +169,13 @@ export class TransListComponent implements OnInit {
             // Find the selected audio file object based on the filename
             console.error('1');
             console.error(this.selectedAudioFileName)
-            console.error(this.extractFileName(this.selectedAudioFileName))
+            //console.error(this.extractFileName(this.selectedAudioFileName))
             this.showInfoViaToast()
             
             
                 // Call the transcription service method to generate transcription
-                this.transcriptionService.generateTranscription(this.extractFileName(this.selectedAudioFileName), transcriptionName).subscribe(
+                //this.transcriptionService.generateTranscription(this.extractFileName(this.selectedAudioFileName), transcriptionName).subscribe(
+                this.transcriptionService.generateTranscription(this.selectedAudioFileName, transcriptionName).subscribe(
                     (response) => {
                         console.log('Transcription generated successfully:', response);
                         // Handle any further logic after successful synchronous response
@@ -218,7 +232,28 @@ export class TransListComponent implements OnInit {
     showSuccessViaToast() {
         this.service.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'Your transcription is ready!', life: 6500 });
     }
+    showSuccessViaToastUpload() {
+        this.service.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'Your file has been succesfully added', life: 6500 });
+    }
     showWarnViaToast() {
         this.service.add({ key: 'tst', severity: 'warn', summary: 'Warn Message', detail: 'Succesfully deleted transcription' });
+    }
+
+    uploadFile(event: any): void {
+        const files = event.files;
+        this.uploadService.uploadFile(files[0]).subscribe(
+            (response: any) => {
+                console.log('File uploaded successfully:', response);
+                this.uploadedFiles.push(files[0]);
+                this.uploadSuccess = true; 
+                this.fetchAudioFiles();
+                this.showSuccessViaToastUpload();
+
+            },
+            (error: any) => {
+                console.error('Error uploading file:', error);
+                this.uploadSuccess = false; 
+            }
+        );
     }
 }
