@@ -1,1 +1,23 @@
-<p>remotetrans works!</p>
+<p>Remote URL transcription service</p>
+<div class="card">
+    <h5>Generate transcription from remote URL (youtube)</h5>
+    <form (ngSubmit)="generateRemoteTranscription(transcriptionName)" #transcriptionForm="ngForm">
+        
+        <div class="col-12 mb-2" style="width: 100%">
+            <input type="text" pInputText placeholder="url of the audio you want to transribe" name="r_url" [(ngModel)]="remote_url" required style="width: 800px;">
+        </div>
+
+
+        <div class="row">
+            <div class="col-12 mb-2 lg:col-4 lg:mb-0">
+                <p-dropdown [options]="languageOptions" [(ngModel)]="selectedLanguage" name="selectedLanguage" placeholder="Select the language used in the audio" [showClear]="true" ngModel #selectedLanguageModel="ngModel" required></p-dropdown>
+            </div>
+        </div>
+        <div class="col-12 mb-2 lg:col-4 lg:mb-0">
+            <input type="text" pInputText placeholder="Name of the transcription" name="transcriptionName" [(ngModel)]="transcriptionName" required #transcriptionNameModel="ngModel">
+        </div>
+        <button type="submit" pButton pRipple [disabled]="!transcriptionForm.valid">Generate</button>
+    </form>
+</div>
+
+<p-toast key="tst"></p-toast>
