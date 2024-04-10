@@ -22,6 +22,7 @@ import { UserprofileComponent } from './demo/components/userprofile/userprofile/
                     //{ path: 'file-list', component: FileListComponent },
                     { path: 'file-list', loadChildren: () => import('./demo/components/filelist/filelist.module').then(m => m.FileListModule) },
                     { path: 'transcription-list', loadChildren: () => import('./demo/components/translist/translist.module').then(m => m.TransListModule) },
+                    { path: 'rem-transcription-list', loadChildren: () => import('./demo/components/remotetrans/remotetrans.module').then(m => m.RemotetransModule) },
                 ]
             },
             { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
