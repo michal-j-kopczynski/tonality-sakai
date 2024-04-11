@@ -12,7 +12,7 @@ export class TranscriptionService {
 
   constructor(private http: HttpClient) {}
 
-  generateTranscription(filename: string, trans_filename: string): Observable<any> {
+  generateTranscription(filename: string, trans_filename: string, language: string): Observable<any> {
     // Get token from localStorage
     const authToken = localStorage.getItem('authToken');
     if (!authToken) {
@@ -25,7 +25,7 @@ export class TranscriptionService {
     });
 
     // Define the request body
-    const requestBody = { filename, trans_filename };
+    const requestBody = { filename, trans_filename, language };
 
     // Make POST request to the Django API
     return this.http.post(this.apiUrl, requestBody, { headers });

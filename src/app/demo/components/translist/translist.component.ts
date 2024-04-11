@@ -175,7 +175,7 @@ export class TransListComponent implements OnInit {
             
                 // Call the transcription service method to generate transcription
                 //this.transcriptionService.generateTranscription(this.extractFileName(this.selectedAudioFileName), transcriptionName).subscribe(
-                this.transcriptionService.generateTranscription(this.selectedAudioFileName, transcriptionName).subscribe(
+                this.transcriptionService.generateTranscription(this.selectedAudioFileName, transcriptionName, this.selectedLanguage).subscribe(
                     (response) => {
                         console.log('Transcription generated successfully:', response);
                         // Handle any further logic after successful synchronous response

@@ -109,7 +109,7 @@ export class LandingComponent {
 
       testTranscription(): void {
         // Call the transcription service method here
-        this.transcriptionService.generateTranscription('common_voice_pl_38400580_qzxUxlW.mp3', 'sample_nazwa1').subscribe(
+        this.transcriptionService.generateTranscription('common_voice_pl_38400580_qzxUxlW.mp3', 'sample_nazwa1', "pl").subscribe(
           (response) => {
             console.log('Transcription generated successfully:', response);
             // Handle any further logic after successful transcription
