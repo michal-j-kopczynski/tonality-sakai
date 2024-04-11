@@ -52,7 +52,7 @@ export class RemotetransComponent {
           
               // Call the transcription service method to generate transcription
               //this.transcriptionService.generateTranscription(this.extractFileName(this.selectedAudioFileName), transcriptionName).subscribe(
-              this.transcriptionService.generateRemoteTranscription(this.remote_url, transcriptionName).subscribe(
+              this.transcriptionService.generateRemoteTranscription(this.remote_url, transcriptionName, this.selectedLanguage).subscribe(
                   (response) => {
                       console.log('Transcription generated successfully:', response);
                       // Handle any further logic after successful synchronous response

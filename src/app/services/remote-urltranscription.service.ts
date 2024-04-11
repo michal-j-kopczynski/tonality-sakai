@@ -11,7 +11,7 @@ export class RemoteURLTranscriptionService {
 
   constructor(private http: HttpClient) {}
 
-  generateRemoteTranscription(remoteurl: string, trans_name: string): Observable<any> {
+  generateRemoteTranscription(remoteurl: string, trans_name: string, language: string): Observable<any> {
     // Get token from localStorage
     const authToken = localStorage.getItem('authToken');
     if (!authToken) {
@@ -24,7 +24,7 @@ export class RemoteURLTranscriptionService {
     });
 
     // Define the request body
-    const requestBody = { remoteurl, trans_name };
+    const requestBody = { remoteurl, trans_name, language };
 
     // Make POST request to the Django API
     return this.http.post(this.apiUrl, requestBody, { headers });
