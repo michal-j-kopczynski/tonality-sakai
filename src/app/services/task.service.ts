@@ -17,7 +17,7 @@ export class TaskService {
   }
 
   checkTaskStatus(): Observable<any> {
-    return this.http.get(`http://127.0.0.1:8000/api/check_task_status/${this.taskId}`);
+    return this.http.get(`http://3.123.146.102:80/api/check_task_status/${this.taskId}`);
   }
 
   pollTaskStatus(): Observable<any> {

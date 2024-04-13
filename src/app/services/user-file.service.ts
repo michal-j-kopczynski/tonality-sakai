@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UserFileService {
-  private apiUrl = 'http://127.0.0.1:8000/api/get_user_audio_files/';
-  private deleteUrl = 'http://127.0.0.1:8000/api/delete_file/'
+  private apiUrl = 'http://3.123.146.102:80/api/get_user_audio_files/';
+  private deleteUrl = 'http://3.123.146.102:80/api/delete_file/'
 
   constructor(private http: HttpClient) { }
 

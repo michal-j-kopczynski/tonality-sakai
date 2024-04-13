@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class RemoteURLTranscriptionService {
 
-  private apiUrl = 'http://127.0.0.1:8000/api/generate_transcription_remote_url/';
+  private apiUrl = 'http://3.123.146.102:80/api/generate_transcription_remote_url/';
 
   constructor(private http: HttpClient) {}
 

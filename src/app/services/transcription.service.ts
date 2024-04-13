@@ -6,9 +6,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TranscriptionService {
-  private apiUrl = 'http://127.0.0.1:8000/api/generate_transcription/';
-  private transcriptionListUrl = 'http://127.0.0.1:8000/api/get_user_transcriptions/';
-  private deleteUrl = 'http://127.0.0.1:8000/api/delete_transcription/'
+  private apiUrl = 'http://3.123.146.102:80/api/generate_transcription/';
+  private transcriptionListUrl = 'http://3.123.146.102:80/api/get_user_transcriptions/';
+  private deleteUrl = 'http://3.123.146.102:80/api/delete_transcription/'
 
   constructor(private http: HttpClient) {}
 
