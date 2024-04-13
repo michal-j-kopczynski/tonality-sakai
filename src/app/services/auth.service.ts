@@ -9,7 +9,7 @@ import { throwError } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://127.0.0.1:8000';
+  private apiUrl = '3.123.146.102/api';
   private token: string | null = localStorage.getItem('authToken');
 
   constructor(private http: HttpClient) {}
