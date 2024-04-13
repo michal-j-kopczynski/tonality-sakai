@@ -44,7 +44,7 @@ export class UserFileService {
   }
 
   getAudioFile(filename: string) {
-    return this.http.get(`http://localhost:8000/api/get_audio_file/${filename}`, { responseType: 'blob' });
+    return this.http.get(`http://3.123.146.102:80/api/get_audio_file/${filename}`, { responseType: 'blob' });
   }
 
 }
