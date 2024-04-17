@@ -2,6 +2,8 @@ import { Component, OnInit, Input} from '@angular/core';
 import { UserFileService } from 'src/app/services/user-file.service';
 import { TranscriptionService } from 'src/app/services/transcription.service';
 import { MenuItem } from 'primeng/api';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { AudioPlayerComponentComponentService } from "src/app/components/my-component/AudioPlayerComponent/audio-player-component/audio-player-component.component.service"
 
 
 @Component({
@@ -24,13 +26,22 @@ export class TransListComponent implements OnInit {
     items: MenuItem[] = [];
     cardMenu: MenuItem[] = [];
 
-    constructor(private userFileService: UserFileService, private transcriptionService: TranscriptionService) { 
+    htmlContent:any="//0//jss//1//xd//3//;sss//4//hello//5//its mekggg//" //text in editor
+   // htmlContent:any=""
+    seconds:number =0
+    lines: any;
+    constructor(private userFileService: UserFileService, private transcriptionService: TranscriptionService,private data: AudioPlayerComponentComponentService) { 
         this.selectedTranscription = ""
     }
+
 
     ngOnInit(): void {
         this.fetchAudioFiles();
         this.fetchTranscriptions();
+        this.data.currentMessage.subscribe(message => {
+            this.seconds = message;
+            this.changeColor(); // Wywołanie funkcji w tym samym komponencie po zmianie wartości seconds
+          });
 
         this.items = [
             { label: 'Angular.io', icon: 'pi pi-external-link', url: 'http://angular.io' },
@@ -67,6 +78,7 @@ export class TransListComponent implements OnInit {
             (transcriptions: any[]) => {
                 this.transData = transcriptions;
                 this.filteredTransData = transcriptions;
+               
             },
             (error) => {
                 console.error('Error fetching audio files:', error);
@@ -120,9 +132,11 @@ export class TransListComponent implements OnInit {
     }
 
     playAudio(audioFile: any, transcription: any) {
+        
         this.selectedAudioFile = audioFile; // Set the selected audio file for playing
         this.playDialogVisible = true; // Show the play dialog
         this.selectedTranscription = transcription;
+        this.htmlContent=this.getCurrentTrans()
     }
 
 
@@ -152,6 +166,7 @@ export class TransListComponent implements OnInit {
                 this.transcriptionService.generateTranscription(this.extractFileName(this.selectedAudioFileName), transcriptionName).subscribe(
                     (response) => {
                         console.log('Transcription generated successfully:', response);
+                      
                         // Handle any further logic after successful transcription
                     },
                     (error) => {
@@ -173,5 +188,89 @@ export class TransListComponent implements OnInit {
     getCurrentTrans(): string {
         // Assuming the 'filename' property holds the URL
         return this.selectedTranscription.transcript;
+
     }
+
+    editorConfig: AngularEditorConfig = {
+        editable: true,
+          spellcheck: true,
+          height: 'auto',
+          minHeight: '0',
+          maxHeight: 'auto',
+          width: 'auto',
+          minWidth: '0',
+          translate: 'yes',
+          enableToolbar: true,
+          showToolbar: true,
+          placeholder: 'Enter text here...',
+          defaultParagraphSeparator: '',
+          defaultFontName: '',
+          defaultFontSize: '',
+          fonts: [
+            {class: 'arial', name: 'Arial'},
+            {class: 'times-new-roman', name: 'Times New Roman'},
+            {class: 'calibri', name: 'Calibri'},
+            {class: 'comic-sans-ms', name: 'Comic Sans MS'}
+          ],
+          customClasses: [
+          {
+            name: 'quote',
+            class: 'quote',
+          },
+          {
+            name: 'redText',
+            class: 'redText'
+          },
+          {
+            name: 'titleText',
+            class: 'titleText',
+            tag: 'h1',
+          },
+        ],
+        uploadWithCredentials: false,
+        sanitize: true,
+        toolbarPosition: 'top',
+        toolbarHiddenButtons: [
+          ['bold', 'italic'],
+          ['fontSize']
+        ]
+    };
+    changeColor()
+    {
+    let textColorStart = "<font color=\"red\">" // otwarcie znacznika dla koloru textu
+    let textColorEnd=" </font color=\"red\">" // zamknięcie znacznika dla koloru textu
+
+    this.htmlContent = this.htmlContent.split(textColorStart).join('');
+
+    this.htmlContent = this.htmlContent.split(textColorEnd).join('');
+
+
+    let regex = new RegExp("(//.+?//)", "gi");
+    this.lines = this.htmlContent
+
+
+    let testowe = this.htmlContent.split('//');
+    let lower = testowe.filter(item => Number(item) <= Number(this.seconds) ).filter(Boolean)
+    let greater = testowe.filter(item => Number(item) >= Number(this.seconds) ).filter(Boolean)
+ 
+    let regex2 = new RegExp("//"+lower.at(-1)+"//")
+    
+    let cos = this.lines.search(regex2)
+
+  
+
+   this.lines= this.lines.slice(0,cos) + textColorStart + this.lines.slice(cos)
+
+   let cos2 = this.lines.indexOf("//",cos+1);
+   cos2 = this.lines.indexOf("//",cos2+5);
+
+  // console.log(cos2)
+  // console.log("lower",lower)
+   console.log(this.lines.slice(cos2))
+   this.lines= this.lines.slice(0,cos2) + textColorEnd+ this.lines.slice(cos2)
+   
+   //console.log(this.lines)
+   this.htmlContent=this.lines
+
+  }
 }

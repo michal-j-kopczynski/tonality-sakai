@@ -82,9 +82,14 @@
         
         <!-- Move the card with p-panel here -->
         <div class="card">
-            <p-panel header="Transkrypcja" [toggleable]="true" class="line-height-3 m-0">
-                <p>{{ getCurrentTrans() }}</p>
-            </p-panel>
+          <!--  <p-panel header="Transkrypcja" [toggleable]="true" class="line-height-3 m-0">-->
+            <p>{{ getCurrentTrans() }}</p>  
+
+               <angular-editor [placeholder]="'Enter text here ....'" [(ngModel)] ="htmlContent" [config]="editorConfig"></angular-editor>
+             
+           
+            
+          <!--   </p-panel>-->
         </div>
     </ng-template>
 

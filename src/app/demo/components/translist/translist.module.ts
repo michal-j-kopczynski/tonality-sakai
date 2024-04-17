@@ -12,6 +12,8 @@ import { AudioModule } from 'src/app/components/my-component/AudioPlayerComponen
 import { FormsModule } from '@angular/forms';
 import { MenuModule } from 'primeng/menu';
 import { PanelModule } from 'primeng/panel';
+import { HttpClientModule } from '@angular/common/http';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
     imports: [
@@ -25,6 +27,8 @@ import { PanelModule } from 'primeng/panel';
         FormsModule,
         MenuModule,
         PanelModule,
+        HttpClientModule,
+        AngularEditorModule
         
     ],
     declarations: [TransListComponent],
