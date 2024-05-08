@@ -18,7 +18,7 @@ export class AudioPlayerComponent implements OnInit {
       container: '#waveform',
       waveColor: 'violet',
       progressColor: 'purple',
-      width: 500
+      //width: 500
     });
   }
 
