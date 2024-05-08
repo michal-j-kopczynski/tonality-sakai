@@ -149,7 +149,7 @@
 
 
 <!-- Dialog for playing audio file -->
-<p-dialog [(visible)]="playDialogVisible" [style]="{width: '80vh', 'max-height': '80vh'}" header="Play Audio" [modal]="true" class="p-fluid">
+<p-dialog [(visible)]="playDialogVisible"  header="Play Audio" [modal]="true" class="p-fluid">
 
     <ng-template pTemplate="content">
         <app-audio-player [audioUrl]="getAudioUrl()"></app-audio-player>
