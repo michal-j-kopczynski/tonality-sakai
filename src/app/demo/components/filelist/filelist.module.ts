@@ -9,6 +9,8 @@ import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { DialogModule } from 'primeng/dialog';
 import { AudioModule } from 'src/app/components/my-component/AudioPlayerComponent/audio-player-component/audiomodule';
+import { PanelModule } from 'primeng/panel';
+
 
 @NgModule({
     imports: [
@@ -19,6 +21,7 @@ import { AudioModule } from 'src/app/components/my-component/AudioPlayerComponen
         RippleModule,
         DialogModule,
         AudioModule,
+        PanelModule,
     ],
     declarations: [FileListComponent, FileNamePipe],
     providers: [
