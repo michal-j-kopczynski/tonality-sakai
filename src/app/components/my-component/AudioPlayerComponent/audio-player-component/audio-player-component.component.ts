@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import WaveSurfer from 'wavesurfer.js';
 import { UserFileService } from 'src/app/services/user-file.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-audio-player',

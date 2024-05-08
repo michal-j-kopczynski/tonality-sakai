@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TranscriptionService {
-  private apiUrl = 'http://3.123.146.102:80/api/generate_transcription/';
-  private transcriptionListUrl = 'http://3.123.146.102:80/api/get_user_transcriptions/';
-  private deleteUrl = 'http://3.123.146.102:80/api/delete_transcription/'
+  private apiUrl = `http://${environment.urls.backendURL}/api/generate_transcription/`;
+  private transcriptionListUrl = `http://${environment.urls.backendURL}/api/get_user_transcriptions/`;
+  private deleteUrl = `http://${environment.urls.backendURL}/api/delete_transcription/`
 
   constructor(private http: HttpClient) {}
 

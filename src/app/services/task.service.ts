@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, timer } from 'rxjs';
 import { switchMap, takeWhile } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class TaskService {
   }
 
   checkTaskStatus(): Observable<any> {
-    return this.http.get(`http://3.123.146.102:80/api/check_task_status/${this.taskId}`);
+    return this.http.get(`http://${environment.urls.backendURL}/api/check_task_status/${this.taskId}`);
   }
 
   pollTaskStatus(): Observable<any> {

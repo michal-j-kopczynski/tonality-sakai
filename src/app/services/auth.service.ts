@@ -4,12 +4,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://3.123.146.102:80/api';
+  private apiUrl = `http://${environment.urls.backendURL}/api`;
   private token: string | null = localStorage.getItem('authToken');
 
   constructor(private http: HttpClient) {}
