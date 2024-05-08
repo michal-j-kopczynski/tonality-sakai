@@ -43,6 +43,9 @@ export class RemotetransComponent {
       this.selectedTranscription = ""
   }
 
+  ngOnInit(): void {
+    this.fetchTranscriptions();
+  }
 
     generateRemoteTranscription(transcriptionName: string): void {
       if (this.remote_url && transcriptionName) {
@@ -86,6 +89,30 @@ export class RemotetransComponent {
           this.showErrorViaToast();
       }
   }
+
+  fetchTranscriptions(): void {
+    this.transcriptionService.getRemoteTranscriptionList().subscribe(
+        (transcriptions: any[]) => {
+            this.transData = transcriptions;
+            this.filteredTransData = transcriptions;
+        },
+        (error) => {
+            console.error('Error fetching audio files:', error);
+        }
+    );
+}
+
+  onGlobalFilter(filterValue: string) {
+    filterValue = filterValue.trim().toLowerCase();
+    this.filteredTransData = this.transData.filter((transcription: any) =>
+        transcription.id.toString().toLowerCase().includes(filterValue) ||
+        transcription.user.toLowerCase().includes(filterValue) ||
+        transcription.filename.toLowerCase().includes(filterValue) ||
+        transcription.uploaded_at.toLowerCase().includes(filterValue) ||
+        transcription.trans_filename.toLowerCase().includes(filterValue) ||
+        transcription.transcript.toLowerCase().includes(filterValue) 
+    );
+}
 
 
   // asynchronous messages
