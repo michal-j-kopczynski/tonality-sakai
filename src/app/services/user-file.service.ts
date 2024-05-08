@@ -1,15 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserFileService {
-  private apiUrl = 'http://3.123.146.102:80/api/get_user_audio_files/';
+  private apiUrl = `http://${environment.urls.backendURL}/api/get_user_audio_files/`;
   private deleteUrl = 'http://3.123.146.102:80/api/delete_file/'
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { 
+    if (environment.production) {
+      console.log('Running in production mode');
+    } else {
+      console.log('Running in development mode');
+    }
+  }
 
   // Method to fetch file names for the current logged-in user
   getFileList(): Observable<string[]> {
