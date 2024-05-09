@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class UploadService {
-  private apiUrl = `http://3${environment.urls.backendURL}/api/upload/`;
+  private apiUrl = `http://${environment.urls.backendURL}/api/upload/`;
 
   constructor(private http: HttpClient) {}
 

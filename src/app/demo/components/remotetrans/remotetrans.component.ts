@@ -5,6 +5,9 @@ import { MenuItem } from 'primeng/api';
 import { TaskService } from 'src/app/services/task.service';
 import { Message, MessageService } from 'primeng/api';
 
+//for embedding yt video
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-remotetrans',
   templateUrl: './remotetrans.component.html',
@@ -34,17 +37,20 @@ export class RemotetransComponent {
     selectedLanguage: string;
     // unique remote url variables
     remote_url: string = '';
+    safe_url: SafeResourceUrl;
 
 
     constructor(private userFileService: UserFileService, 
       private transcriptionService: RemoteURLTranscriptionService,
       private taskService: TaskService,
-      private service: MessageService,) { 
+      private service: MessageService,
+      public sanitizer: DomSanitizer,) { 
       this.selectedTranscription = ""
   }
 
   ngOnInit(): void {
     this.fetchTranscriptions();
+    this.safe_url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/izGwDsrQ1eQ');   
   }
 
     generateRemoteTranscription(transcriptionName: string): void {
@@ -107,11 +113,51 @@ export class RemotetransComponent {
     this.filteredTransData = this.transData.filter((transcription: any) =>
         transcription.id.toString().toLowerCase().includes(filterValue) ||
         transcription.user.toLowerCase().includes(filterValue) ||
-        transcription.filename.toLowerCase().includes(filterValue) ||
+        transcription.remote_title.toLowerCase().includes(filterValue) ||
         transcription.uploaded_at.toLowerCase().includes(filterValue) ||
-        transcription.trans_filename.toLowerCase().includes(filterValue) ||
         transcription.transcript.toLowerCase().includes(filterValue) 
     );
+}
+
+playAudio(audioFile: any, transcription: any) {
+    this.safe_url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + this.getVideoId(transcription.remoteurl));   
+    this.selectedAudioFile = audioFile; // Set the selected audio file for playing
+    this.playDialogVisible = true; // Show the play dialog
+    this.selectedTranscription = transcription;
+}
+
+
+hidePlayDialog() {
+    this.playDialogVisible = false; // Hide the play dialog
+}
+
+getVideoId(url) {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+
+    return (match && match[2].length === 11)
+      ? match[2]
+      : null;
+}
+getEmbedUrl(): SafeResourceUrl {
+    const videoId = this.getVideoId(this.selectedTranscription.remote_url);
+    
+        const embedUrl = `https://www.youtube.com/embed/izGwDsrQ1eQ`;
+        
+        return this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl);
+    
+}
+
+getAudioUrl(): SafeResourceUrl {
+    // Assuming the 'filename' property holds the URL
+    //this.safe_url = this._sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/watch?v=1ozGKlOzEVc');
+    //return this.selectedTranscription.remote_url;
+    //this.safe_url = this.sanitizer.bypassSecurityTrustResourceUrl(this.selectedTranscription.remote_url);
+    return this.selectedTranscription.remote_url;
+}
+getCurrentTrans(): string {
+    // Assuming the 'filename' property holds the URL
+    return this.selectedTranscription.transcript;
 }
 
 

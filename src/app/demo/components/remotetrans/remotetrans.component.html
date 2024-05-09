@@ -56,8 +56,9 @@
                     <tr>
                         <th>ID</th>
                         <!-- <th>User</th> -->
-                        <th pSortableColumn="trans_filename">Transcription Name <p-sortIcon field="Transcriptionname"></p-sortIcon></th>
-                        <th pSortableColumn="filename">File <p-sortIcon field="file"></p-sortIcon></th>
+                        <th pSortableColumn="remoteurl">URL <p-sortIcon field="Transcriptionname"></p-sortIcon></th>
+                        <th pSortableColumn="remote_title">YT title <p-sortIcon field="file"></p-sortIcon></th>
+                        <th pSortableColumn="trans_name">Transcription name <p-sortIcon field="file"></p-sortIcon></th>
                         <th pSortableColumn="uploaded_at">Uploaded At <p-sortIcon field="uploaded_at"></p-sortIcon></th>
                         <th pSortableColumn="transcript">Transcript<p-sortIcon field="transcript"></p-sortIcon></th>
                         <th>Action</th> <!-- Add this column for edit and delete action -->
@@ -66,9 +67,9 @@
                 <ng-template pTemplate="body" let-transcription>
                     <tr>
                         <td>{{ transcription.id }}</td>
-                        <td>{{ transcription.trans_filename }}</td>
-                        <!-- <td>{{ audioFile.user }}</td> -->
-                        <td>{{ extractFileName(transcription.filename) }}</td>
+                        <td>{{ transcription.remoteurl }}</td>
+                        <td>{{ transcription.remote_title }}</td>
+                        <td>{{ transcription.trans_name }}</td>
                         <td>{{ transcription.uploaded_at }}</td>
                         <td>{{ transcription.transcript | slice:0:200 }}</td>
                         <td>
@@ -104,7 +105,7 @@
 <p-dialog [(visible)]="playDialogVisible"  header="Play Audio" [modal]="true" class="p-fluid">
 
     <ng-template pTemplate="content">
-        <app-audio-player [audioUrl]="getAudioUrl()"></app-audio-player>
+        
         
         <!-- Move the card with p-panel here -->
         <div class="card">
@@ -112,6 +113,18 @@
                 <p>{{ getCurrentTrans() }}</p>
 
             </p-panel>
+        </div>
+
+        <div class="card">
+            <p-panel header="Video" [toggleable]="true" class="line-height-3 m-0">
+                <iframe width="560" height="315" 
+                [src]="safe_url" 
+                title="YouTube video player" frameborder="0" allow="accelerometer;
+                autoplay; clipboard-write; encrypted-media; gyroscope; 
+                picture-in-picture; web-share" allowfullscreen></iframe>
+            </p-panel>
+
+            
         </div>
     </ng-template>
 
