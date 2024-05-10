@@ -10,6 +10,7 @@ export class RemoteURLTranscriptionService {
 
   private apiUrl = `http://${environment.urls.backendURL}/api/generate_transcription_remote_url/`;
   private remotetranscriptionListUrl = `http://${environment.urls.backendURL}/api/get_user_remote_transcriptions/`;
+  private deleteUrl = `http://${environment.urls.backendURL}/api/delete_remote_transcription/`
 
   constructor(private http: HttpClient) {}
 
@@ -45,5 +46,22 @@ export class RemoteURLTranscriptionService {
     // Make HTTP GET request to fetch file names
     return this.http.get<string[]>(this.remotetranscriptionListUrl, { headers });
   }
+
+  deleteTranscriptionByName(trans_name: string, uploaded_at: string): Observable<any> {
+    // Get token from localStorage
+    const authToken = localStorage.getItem('authToken');
+    if (!authToken) {
+      throw new Error('No authentication token available.');
+    }
+  
+    // Include token in request headers
+    const headers = { Authorization: `Token ${authToken}` };
+    // Construct the URL with the filename as a query parameter
+    const url = `${this.deleteUrl}?trans_name=${encodeURIComponent(trans_name)}&date_of_creation=${encodeURIComponent(uploaded_at)}`;
+  
+    // Make HTTP DELETE request to delete the file
+    return this.http.delete(url, { headers });
+  }
+
 
 }

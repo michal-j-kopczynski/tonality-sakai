@@ -108,6 +108,22 @@ export class RemotetransComponent {
     );
 }
 
+deleteTranscription(transcriptionName: string, uploaded_at:string): void {
+         
+    this.transcriptionService.deleteTranscriptionByName(transcriptionName, uploaded_at).subscribe(
+        () => {
+            // On success, remove the file from the audioFiles array
+            this.transData = this.transData.filter(file => file.uploaded_at !== uploaded_at);
+            // Also update the filteredAudioFiles array if necessary
+            this.filteredTransData = this.filteredTransData.filter(file => file.uploaded_at !== uploaded_at);
+            this.showWarnViaToast();
+        },
+        (error) => {
+            console.error('Error deleting audio file:', error);
+        }
+    );
+}
+
   onGlobalFilter(filterValue: string) {
     filterValue = filterValue.trim().toLowerCase();
     this.filteredTransData = this.transData.filter((transcription: any) =>
