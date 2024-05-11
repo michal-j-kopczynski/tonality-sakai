@@ -31,7 +31,7 @@ import { TranscriptionService } from 'src/app/services/transcription.service';
 
     </div>
   `,
-    //templateUrl: './landing.component.html'
+    templateUrl: './landing.component.html'
 })
 export class LandingComponent {
 
