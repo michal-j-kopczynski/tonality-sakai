@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import WaveSurfer from 'wavesurfer.js';
 import { UserFileService } from 'src/app/services/user-file.service';
 import { environment } from 'src/environments/environment';
+import { AudioService  } from "src/app/components/my-component/AudioPlayerComponent/audio-player-component/audio.service"
 
 @Component({
   selector: 'app-audio-player',
@@ -10,8 +11,10 @@ import { environment } from 'src/environments/environment';
 export class AudioPlayerComponent implements OnInit {
   wavesurfer: WaveSurfer;
   @Input() audioUrl: string; // Input property to receive the audio URL
-
-  constructor(private userFileService: UserFileService) { }
+  currentSecond:number=0
+  seconds=0
+  lines:any = "";
+  constructor(private userFileService: UserFileService,private data: AudioService ) { }
 
   ngOnInit(): void {
     this.wavesurfer = WaveSurfer.create({
@@ -29,9 +32,11 @@ export class AudioPlayerComponent implements OnInit {
       this.wavesurfer.load(url);
 
     }
-    
+
     
     this.wavesurfer.play();
+   
+   
   }
 
   playAudioBlob(filename: string): void {
@@ -41,7 +46,13 @@ export class AudioPlayerComponent implements OnInit {
         this.wavesurfer.loadBlob(blob);
         this.wavesurfer.play();
       });
+      this.wavesurfer.on('timeupdate',(currentTime:number) => {
+        this.currentSecond=Math.floor(currentTime);
+        this.data.changeSecond(this.currentSecond)
+     
+      });
     }
+
   }
 
   pauseAudio(): void {
