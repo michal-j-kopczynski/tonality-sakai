@@ -24,6 +24,8 @@ export class RemotetransComponent {
     playDialogVisible: boolean = false; // Property to control visibility of the play dialog
     selectedAudioFileName: string = ''; // Property to hold the selected audio file name for transcription
     transcriptionName: string = ''; // Define the transcriptionName property
+
+    transcriptionsummaryData: string = ''; //can be updated and with data binding automatically shown
     
     //crud
     items: MenuItem[] = [];
@@ -75,7 +77,7 @@ export class RemotetransComponent {
                               {
                                   console.log('Loading message popup...');
                                   this.showSuccessViaToast();
-                                  //this.fetchTranscriptions();
+                                  this.fetchTranscriptions();
                               }
                           },
                           (error) => {
@@ -124,6 +126,51 @@ deleteTranscription(transcriptionName: string, uploaded_at:string): void {
     );
 }
 
+regenerate_summary(): void {
+    console.log('Regenerating transcription...');
+    if (this.selectedTranscription.id && this.selectedTranscription.trans_name) {
+        console.error(this.remote_url)
+        this.showInfoViaToast()
+        
+        
+          
+            this.transcriptionService.regenerate_summary_remote(this.selectedTranscription.remoteurl, this.selectedTranscription.trans_name).subscribe(
+                (response) => {
+                    console.log('Transcription summary response generated successfully:', response);
+                    // Handle any further logic after successful synchronous response
+                    this.taskService.setTaskId(response.task_id);
+                    console.log(this.taskService.taskId);
+                    this.taskService.pollTaskStatus().subscribe(
+                        (taskStatusResponse) => {
+                            console.log('Task status response:', taskStatusResponse);
+                            // Handle task status response here
+                            if(taskStatusResponse.status == "completed")
+                            {
+                                console.log('Loading message popup...');
+                                this.showSuccessViaToast();
+                                this.transcriptionsummaryData = taskStatusResponse.result
+                                this.fetchTranscriptions();
+                                
+                            }
+                        },
+                        (error) => {
+                            console.error('Error polling task status:', error);
+                            // Handle error cases
+                        }
+                    );
+                },
+                (error) => {
+                    console.error('Error generating transcription:', error);
+                    // Handle error cases
+                }
+            );
+        
+    } else {
+        console.error('No audio file selected or transcription name is empty');
+        this.showErrorViaToast();
+    }
+}
+
   onGlobalFilter(filterValue: string) {
     filterValue = filterValue.trim().toLowerCase();
     this.filteredTransData = this.transData.filter((transcription: any) =>
@@ -140,11 +187,13 @@ playAudio(audioFile: any, transcription: any) {
     this.selectedAudioFile = audioFile; // Set the selected audio file for playing
     this.playDialogVisible = true; // Show the play dialog
     this.selectedTranscription = transcription;
+    this.transcriptionsummaryData = this.getCurrentTransSummary();
 }
 
 
 hidePlayDialog() {
     this.playDialogVisible = false; // Hide the play dialog
+    this.fetchTranscriptions()
 }
 
 getVideoId(url) {
@@ -172,8 +221,11 @@ getAudioUrl(): SafeResourceUrl {
     return this.selectedTranscription.remote_url;
 }
 getCurrentTrans(): string {
-    // Assuming the 'filename' property holds the URL
     return this.selectedTranscription.transcript;
+}
+
+getCurrentTransSummary(): string {
+    return this.selectedTranscription.summary;
 }
 
 
