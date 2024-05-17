@@ -12,7 +12,15 @@
         <i class="pi pi-ellipsis-v"></i>
     </button>
 
+
+    
     <div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
+
+
+        <p-menubar [model]="tieredItems">
+                
+        </p-menubar>
+        <!--
         <button class="p-link layout-topbar-button" (click)="showProfileOptions()">
             <i class="pi pi-users"></i>
             <span>Profile</span>
@@ -28,8 +36,10 @@
             </button>
         </div>
         <button class="p-link layout-topbar-button" [routerLink]="'/documentation'">
-            <i class="pi pi-cog"></i>
+            <i class="pi pi-book"></i>
             <span>Settings</span>
         </button>
+        -->
     </div>
+    
 </div>

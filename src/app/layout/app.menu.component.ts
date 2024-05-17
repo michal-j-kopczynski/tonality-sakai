@@ -29,9 +29,9 @@ export class AppMenuComponent implements OnInit {
                     //{ label: 'Transcriptions', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/uikit/charts'] },
                     //{ label: 'Advanced options', icon: 'pi pi-fw pi-list', routerLink: ['/uikit/list'] },
                     //{ label: 'Testing playground', icon: 'pi pi-fw pi-list', routerLink: ['/landing'] },
-                    { label: 'Transcriptions & Notes', icon: 'pi pi-fw pi-list', routerLink: ['/transcription-list'] },
-                    { label: 'Remote URL Transcriptions & Notes', icon: 'pi pi-fw pi-list', routerLink: ['/rem-transcription-list'] },
-                    { label: 'Uploaded files', icon: 'pi pi-fw pi-list', routerLink: ['/file-list'] },
+                    { label: 'Transcriptions & Notes', icon: 'pi pi-fw pi-microphone', routerLink: ['/transcription-list'] },
+                    { label: 'Remote URL Transcriptions & Notes', icon: 'pi pi-fw pi-youtube', routerLink: ['/rem-transcription-list'] },
+                    { label: 'Uploaded files', icon: 'pi pi-fw pi-file-export', routerLink: ['/file-list'] },
                     /*
                     
                     

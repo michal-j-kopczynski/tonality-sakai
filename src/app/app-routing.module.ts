@@ -23,11 +23,12 @@ import { UserprofileComponent } from './demo/components/userprofile/userprofile/
                     { path: 'file-list', loadChildren: () => import('./demo/components/filelist/filelist.module').then(m => m.FileListModule) },
                     { path: 'transcription-list', loadChildren: () => import('./demo/components/translist/translist.module').then(m => m.TransListModule) },
                     { path: 'rem-transcription-list', loadChildren: () => import('./demo/components/remotetrans/remotetrans.module').then(m => m.RemotetransModule) },
+                    { path: 'settings', loadChildren: () => import('src/app/demo/components/settings/settings.module').then(m => m.SettingsModule) },
                 ]
             },
             { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
             { path: 'landing', loadChildren: () => import('./demo/components/landing/landing.module').then(m => m.LandingModule) },
-            { path: 'userprofile', loadChildren: () => import('./demo/components/userprofile/userprofile/userprofile.module').then(m => m.UserprofileModule) },
+            //{ path: 'userprofile', loadChildren: () => import('./demo/components/userprofile/userprofile/userprofile.module').then(m => m.UserprofileModule) },
             { path: 'notfound', component: NotfoundComponent },
             { path: '**', redirectTo: '/notfound' },
         ], { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled', onSameUrlNavigation: 'reload' })
