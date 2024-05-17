@@ -7,11 +7,12 @@ import { Message, MessageService } from 'primeng/api';
 import { UploadService } from 'src/app/services/upload.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { AudioService } from 'src/app/components/my-component/AudioPlayerComponent/audio-player-component/audio.service'
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-trans-list',
     templateUrl: './translist.component.html',
-    providers: [MessageService],
+    providers: [MessageService,],
     
 })
 export class TransListComponent implements OnInit {
@@ -43,17 +44,21 @@ export class TransListComponent implements OnInit {
     // Property to store the selected language
     selectedLanguage: string;
 
-    htmlContent:any="//0//Asia ma kota//1//Tomek nie ma//3//Witam//4//hello//5//its mekggg//" //text in editor
+    htmlContent:any="There was an error. Please try again later..." //text in editor
    // htmlContent:any=""
     seconds:number =0
     lines: any;
+
+    transcriptionsummaryData: string = ''; //can be updated and with data binding automatically shown
+    transcription_seconds_data: string = '';
 
     constructor(private userFileService: UserFileService, 
         private transcriptionService: TranscriptionService,
         private taskService: TaskService,
         private service: MessageService,
         private uploadService: UploadService,
-        private data: AudioService) { 
+        private data: AudioService,
+        private sanitizer: DomSanitizer,) { 
         this.selectedTranscription = ""
         
     }
@@ -63,7 +68,7 @@ export class TransListComponent implements OnInit {
         this.fetchTranscriptions();
         this.data.currentMessage.subscribe(message => {
             this.seconds = message;
-            this.changeColor(); // Wywołanie funkcji w tym samym komponencie po zmianie wartości seconds
+            //this.changeColor(); // Wywołanie funkcji w tym samym komponencie po zmianie wartości seconds
           });
         this.items = [
             { label: 'Angular.io', icon: 'pi pi-external-link', url: 'http://angular.io' },
@@ -127,6 +132,50 @@ export class TransListComponent implements OnInit {
     } 
     */
 
+    regenerate_summary(): void {
+        console.log('Regenerating transcription...');
+        if (this.selectedTranscription.id) {
+            this.showInfoViaToast()
+            
+            
+              
+                this.transcriptionService.regenerate_summary(this.selectedTranscription.trans_filename, this.selectedTranscription.uploaded_at).subscribe(
+                    (response) => {
+                        console.log('Transcription summary response generated successfully:', response);
+                        // Handle any further logic after successful synchronous response
+                        this.taskService.setTaskId(response.task_id);
+                        console.log(this.taskService.taskId);
+                        this.taskService.pollTaskStatus().subscribe(
+                            (taskStatusResponse) => {
+                                console.log('Task status response:', taskStatusResponse);
+                                // Handle task status response here
+                                if(taskStatusResponse.status == "completed")
+                                {
+                                    console.log('Loading message popup...');
+                                    this.showSuccessViaToast();
+                                    this.transcriptionsummaryData = taskStatusResponse.result
+                                    this.fetchTranscriptions();
+                                    
+                                }
+                            },
+                            (error) => {
+                                console.error('Error polling task status:', error);
+                                // Handle error cases
+                            }
+                        );
+                    },
+                    (error) => {
+                        console.error('Error generating transcription:', error);
+                        // Handle error cases
+                    }
+                );
+            
+        } else {
+            console.error('No audio file selected or transcription name is empty');
+            this.showErrorViaToast();
+        }
+    }
+
     onGlobalFilter(filterValue: string) {
         filterValue = filterValue.trim().toLowerCase();
         this.filteredTransData = this.transData.filter((transcription: any) =>
@@ -155,15 +204,19 @@ export class TransListComponent implements OnInit {
     }
 
     playAudio(audioFile: any, transcription: any) {
+        this.fetchTranscriptions()
         this.selectedAudioFile = audioFile; // Set the selected audio file for playing
         this.playDialogVisible = true; // Show the play dialog
         this.selectedTranscription = transcription;
-        //this.htmlContent=this.getCurrentTrans()
+        this.htmlContent=this.getCurrentTrans()
+        this.transcription_seconds_data = this.selectedTranscription.transcript_seconds;
+        this.transcriptionsummaryData = this.getCurrentTransSummary();
     }
 
 
     hidePlayDialog() {
         this.playDialogVisible = false; // Hide the play dialog
+        this.fetchTranscriptions()
     }
 
     editAudioFile(audioFile: any) {
@@ -227,10 +280,36 @@ export class TransListComponent implements OnInit {
         // Assuming the 'filename' property holds the URL
         return this.selectedTranscription.filename;
     }
+
+    getCurrentTranshtml(): SafeHtml {
+        const htmlContent = this.selectedTranscription.transcript;
+        return this.sanitizer.bypassSecurityTrustHtml(htmlContent);
+      }
     getCurrentTrans(): string {
         // Assuming the 'filename' property holds the URL
         return this.selectedTranscription.transcript;
     }
+
+    getCurrentTransSummary(): string {
+        return this.selectedTranscription.summary;
+    }
+    save_edited_transcript() {
+        console.error('saving...');
+        this.transcriptionService.save_edited_transcript(
+            this.selectedTranscription.trans_filename, 
+            this.selectedTranscription.uploaded_at, 
+            this.htmlContent
+        ).subscribe(
+            response => {
+                console.log('Save successful:', response);
+                this.showSuccessViaToastCustom("Save successful");
+            },
+            error => {
+                console.error('Error saving:', error);
+            }
+        );
+    }
+    
 
     // asynchronous messages
     showInfoViaToast() {
@@ -243,6 +322,9 @@ export class TransListComponent implements OnInit {
 
     showSuccessViaToast() {
         this.service.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'Your transcription is ready!', life: 6500 });
+    }
+    showSuccessViaToastCustom(message: string) {
+        this.service.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: message, life: 6500 });
     }
     showSuccessViaToastUpload() {
         this.service.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'Your file has been succesfully added', life: 6500 });
@@ -290,21 +372,7 @@ export class TransListComponent implements OnInit {
             {class: 'calibri', name: 'Calibri'},
             {class: 'comic-sans-ms', name: 'Comic Sans MS'}
           ],
-          customClasses: [
-          {
-            name: 'quote',
-            class: 'quote',
-          },
-          {
-            name: 'redText',
-            class: 'redText'
-          },
-          {
-            name: 'titleText',
-            class: 'titleText',
-            tag: 'h1',
-          },
-        ],
+          
         uploadWithCredentials: false,
         sanitize: true,
         toolbarPosition: 'top',

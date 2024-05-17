@@ -1,11 +1,36 @@
-<div id="waveform"></div>
-<button (click)="playAudio('http://{{${environment.urls.backendURL}}}/api/get_audiofile/' + audioUrl)">Load Audio</button>
-<button (click)="playAudioBlob(audioUrl)">Load Audio blob</button>
-<button (click)="pauseAudio()">Play/Pause</button>
-<button (click)="stopAudio()">Stop</button>
-<button (click)="setPlaybackRate(0.5)">Slow Down</button>
-<button (click)="setPlaybackRate(1)">Normal speed</button>
-<button (click)="setPlaybackRate(1.5)">Speed Up</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Layout</title>
+    <style>
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .button-container button {
+            flex: 1 1 auto;
+            max-width: 150px;
+            min-width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div id="waveform"></div>
+    <div class="button-container">
+        <button pButton pRipple (click)="playAudioBlob(audioUrl)">Load Audio</button>
+        <button pButton pRipple (click)="pauseAudio()">Play/Pause</button>
+        <button pButton pRipple (click)="stopAudio()">Reset</button>
+        <button pButton pRipple (click)="setPlaybackRate(0.5)">Slow Down</button>
+        <button pButton pRipple (click)="setPlaybackRate(1)">Normal speed</button>
+        <button pButton pRipple (click)="setPlaybackRate(1.5)">Speed Up</button>
+    </div>
+</body>
+</html>
+
 
 <!--
 <p>tekst</p>

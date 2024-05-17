@@ -21,6 +21,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { DropdownModule } from "primeng/dropdown";
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { HttpClientModule } from '@angular/common/http';
+import { HtmlToPlainPipe } from 'src/app/pipes/html-to-plain.pipe';
 
 
 @NgModule({
@@ -42,14 +43,15 @@ import { HttpClientModule } from '@angular/common/http';
         FileUploadModule,
         DropdownModule,
         AngularEditorModule,
-        HttpClientModule
+        HttpClientModule,
+        HtmlToPlainPipe
         
         
     ],
-    declarations: [TransListComponent],
+    declarations: [TransListComponent,],
     providers: [
         UserFileService,
-        MessageService
+        MessageService,
     ]
 })
 export class TransListModule { }

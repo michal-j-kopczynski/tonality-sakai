@@ -136,7 +136,7 @@
                         <!-- <td>{{ audioFile.user }}</td> -->
                         <td>{{ extractFileName(transcription.filename) }}</td>
                         <td>{{ transcription.uploaded_at }}</td>
-                        <td>{{ transcription.transcript | slice:0:200 }}</td>
+                        <td>{{ transcription.transcript | slice:0:200 | htmlToPlain}}</td>
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-play" class="p-button-rounded p-button-success mr-2" (click)="playAudio(audioFile, transcription)"></button>
@@ -174,11 +174,34 @@
         
         <!-- Move the card with p-panel here -->
         <div class="card">
-            <p-panel header="Transkrypcja" [toggleable]="true" class="line-height-3 m-0">
-                <p>{{ getCurrentTrans() }}</p>
-                    <angular-editor [placeholder]="'Enter text here ....'" [(ngModel)] ="htmlContent" [config]="editorConfig"></angular-editor>
+            <p-panel header="Transcripion" [toggleable]="true" class="line-height-3 m-0">
+                <p [innerHTML]="getCurrentTranshtml()"></p>
+                <!--<p>{{ getCurrentTranshtml() }}</p> -->
             </p-panel>
         </div>
+
+        <div class="card">     
+            <p-panel header="Summary" [toggleable]="true" class="line-height-3 m-0">
+                <p>{{ transcriptionsummaryData }}</p>
+                <div class="flex flex-wrap gap-2">
+                    <button pButton pRipple type="button" label="Regenerate summary" class="p-button-raised" (click)="regenerate_summary()"></button>
+                </div>    
+            </p-panel>
+        </div>    
+
+        <div class="card">     
+            <p-panel header="Editor" [toggleable]="true" class="line-height-3 m-0">
+                    <angular-editor [placeholder]="'Enter text here ....'" [(ngModel)] ="htmlContent" [config]="editorConfig"></angular-editor>
+                    <button pButton pRipple type="button" label="Save edit" class="p-button-raised" (click)="save_edited_transcript()"></button>
+            </p-panel>
+        </div>
+
+        <div class="card">     
+            <p-panel header="Transcription divided by time" [toggleable]="true" class="line-height-3 m-0">
+                <p>{{transcription_seconds_data}}</p>
+            </p-panel>
+        </div>
+        
     </ng-template>
 
     <!-- Remove the card with p-panel from the outer content -->
