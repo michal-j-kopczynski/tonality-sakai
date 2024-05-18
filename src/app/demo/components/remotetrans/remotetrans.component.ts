@@ -26,7 +26,10 @@ export class RemotetransComponent {
     transcriptionName: string = ''; // Define the transcriptionName property
 
     transcriptionsummaryData: string = ''; //can be updated and with data binding automatically shown
-    
+    transcription_seconds_data: string = '';
+    transcription_speaker_diarization: string = '';
+
+
     //crud
     items: MenuItem[] = [];
     cardMenu: MenuItem[] = [];
@@ -187,6 +190,8 @@ playAudio(audioFile: any, transcription: any) {
     this.selectedAudioFile = audioFile; // Set the selected audio file for playing
     this.playDialogVisible = true; // Show the play dialog
     this.selectedTranscription = transcription;
+
+    this.transcription_speaker_diarization = this.selectedTranscription.speaker_diarization;
     this.transcriptionsummaryData = this.getCurrentTransSummary();
 }
 

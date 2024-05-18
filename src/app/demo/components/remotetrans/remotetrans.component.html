@@ -123,16 +123,24 @@
                 autoplay; clipboard-write; encrypted-media; gyroscope; 
                 picture-in-picture; web-share" allowfullscreen></iframe>
             </p-panel>
+        </div>
 
+        <div class="card">
             <p-panel header="Summary" [toggleable]="true" class="line-height-3 m-0">
                 <p>{{ transcriptionsummaryData }}</p>
                 <div class="flex flex-wrap gap-2">
                     <button pButton pRipple type="button" label="Regenerate summary" class="p-button-raised" (click)="regenerate_summary()"></button>
                  </div>    
             </p-panel>
-
-            
         </div>
+
+        <div class="card">     
+            <p-panel header="Transcription divided by time" [toggleable]="true" class="line-height-3 m-0">
+                <p>{{transcription_speaker_diarization}}</p>
+            </p-panel>
+        </div>
+
+
     </ng-template>
 
     <!-- Remove the card with p-panel from the outer content -->

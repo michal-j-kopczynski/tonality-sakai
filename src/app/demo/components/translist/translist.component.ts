@@ -52,6 +52,7 @@ export class TransListComponent implements OnInit {
 
     transcriptionsummaryData: string = ''; //can be updated and with data binding automatically shown
     transcription_seconds_data: string = '';
+    transcription_speaker_diarization: string = '';
     cookieValue : string = 'default';
 
     constructor(private userFileService: UserFileService, 
@@ -218,6 +219,7 @@ export class TransListComponent implements OnInit {
         this.selectedTranscription = transcription;
         this.htmlContent=this.getCurrentTrans()
         this.transcription_seconds_data = this.selectedTranscription.transcript_seconds;
+        this.transcription_speaker_diarization = this.selectedTranscription.speaker_diarization;
         this.transcriptionsummaryData = this.getCurrentTransSummary();
     }
 
