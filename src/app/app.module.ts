@@ -17,6 +17,7 @@ import { BrowserModule } from '@angular/platform-browser'
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {CookieService} from 'ngx-cookie-service';
 
 @NgModule({
     declarations: [
@@ -33,7 +34,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         CountryService, CustomerService, EventService, IconService, NodeService,
-        PhotoService, ProductService, LogService, AuthGuard
+        PhotoService, ProductService, LogService, AuthGuard, CookieService,
     ],
     bootstrap: [AppComponent]
 })

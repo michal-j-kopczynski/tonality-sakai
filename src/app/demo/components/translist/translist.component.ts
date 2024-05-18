@@ -8,6 +8,7 @@ import { UploadService } from 'src/app/services/upload.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { AudioService } from 'src/app/components/my-component/AudioPlayerComponent/audio-player-component/audio.service'
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
     selector: 'app-trans-list',
@@ -51,6 +52,7 @@ export class TransListComponent implements OnInit {
 
     transcriptionsummaryData: string = ''; //can be updated and with data binding automatically shown
     transcription_seconds_data: string = '';
+    cookieValue : string = 'default';
 
     constructor(private userFileService: UserFileService, 
         private transcriptionService: TranscriptionService,
@@ -58,7 +60,8 @@ export class TransListComponent implements OnInit {
         private service: MessageService,
         private uploadService: UploadService,
         private data: AudioService,
-        private sanitizer: DomSanitizer,) { 
+        private sanitizer: DomSanitizer,
+        private cookieService: CookieService,) { 
         this.selectedTranscription = ""
         
     }
@@ -86,6 +89,11 @@ export class TransListComponent implements OnInit {
                 label: 'Delete', icon: 'pi pi-fw pi-trash'
             },
         ];
+        
+        console.log(this.cookieValue)
+        //this.cookieService.set('Test', 'Hello World');
+        this.cookieValue = this.cookieService.get('Test2');
+        console.log(this.cookieValue)
     }
 
     fetchAudioFiles(): void {
