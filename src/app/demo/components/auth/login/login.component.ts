@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { LogService } from '../../../../services/log.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-login',
@@ -23,7 +24,7 @@ export class LoginComponent {
     password: string = '';
     loginError: string | null = null;
 
-    constructor(public layoutService: LayoutService, private logService: LogService, private authService: AuthService, private router: Router) 
+    constructor(public layoutService: LayoutService, private logService: LogService, private authService: AuthService, public router: Router, private serviceMess: MessageService,) 
     { 
         this.logToConsole();
     }
@@ -43,7 +44,11 @@ export class LoginComponent {
                 console.error(error);
             // Handle login error (e.g., display error message to user)
             this.loginError = 'Sorry, your password was incorrect. Please double-check your password.';
+            this.showWarnViaToast(this.loginError);
             }
-        );
+        );  
     }
+    showWarnViaToast(message: string): void {
+        this.serviceMess.add({ key: 'tst', severity: 'warn', summary: 'Warn Message', detail: message, life: 10500 });
+    }  
 }

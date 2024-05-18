@@ -130,7 +130,7 @@ regenerate_summary(): void {
     console.log('Regenerating transcription...');
     if (this.selectedTranscription.id && this.selectedTranscription.trans_name) {
         console.error(this.remote_url)
-        this.showInfoViaToast()
+        this.showInfoViaToastCustom("Your summary is being regenerated...")
         
         
           
@@ -147,7 +147,7 @@ regenerate_summary(): void {
                             if(taskStatusResponse.status == "completed")
                             {
                                 console.log('Loading message popup...');
-                                this.showSuccessViaToast();
+                                this.showSuccessViaToastCustom("Your summary is ready!");
                                 this.transcriptionsummaryData = taskStatusResponse.result
                                 this.fetchTranscriptions();
                                 
@@ -230,6 +230,17 @@ getCurrentTransSummary(): string {
 
 
   // asynchronous messages
+
+  showInfoViaToastCustom(message: string) {
+    this.service.add({ key: 'tst', severity: 'info', summary: 'Info Message', detail: message, life: 6500 });
+}
+
+
+showSuccessViaToastCustom(message: string) {
+    this.service.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: message, life: 6500 });
+}
+
+
   showInfoViaToast() {
     this.service.add({ key: 'tst', severity: 'info', summary: 'Info Message', detail: 'Your transrciption is being processed...', life: 6500 });
 }

@@ -25,7 +25,7 @@
                             <label for="rememberme1">Remember me</label>
                         </div>
                         <div *ngIf="signupError" class="text-red-500 mb-3">{{ signupError }}</div>
-                        <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Forgot password?</a>
+                        <a class="font-medium no-underline ml-2 text-right cursor-pointer" (click)="router.navigate(['/auth/login'])" style="color: var(--primary-color)">Already have an account? Login</a>
                     </div>
                     
                     <button pButton pRipple label="Sign Up" class="w-full p-3 text-xl" (click)="signup()"></button>

@@ -24,7 +24,7 @@ export class SigninComponent {
     password: string = '';
     signupError: string | null = null;
 
-    constructor(public layoutService: LayoutService, private logService: LogService, private authService: AuthService, private router: Router) 
+    constructor(public layoutService: LayoutService, private logService: LogService, private authService: AuthService, public router: Router) 
     { 
         this.logToConsole();
     }

@@ -143,7 +143,7 @@ export class TransListComponent implements OnInit {
     regenerate_summary(): void {
         console.log('Regenerating transcription...');
         if (this.selectedTranscription.id) {
-            this.showInfoViaToast()
+            this.showInfoViaToastCustom("Your summary is being regenerated...")
             
             
               
@@ -160,7 +160,7 @@ export class TransListComponent implements OnInit {
                                 if(taskStatusResponse.status == "completed")
                                 {
                                     console.log('Loading message popup...');
-                                    this.showSuccessViaToast();
+                                    this.showSuccessViaToastCustom("Your summary is ready!");
                                     this.transcriptionsummaryData = taskStatusResponse.result
                                     this.fetchTranscriptions();
                                     
@@ -322,6 +322,9 @@ export class TransListComponent implements OnInit {
     // asynchronous messages
     showInfoViaToast() {
         this.service.add({ key: 'tst', severity: 'info', summary: 'Info Message', detail: 'Your transrciption is being processed...', life: 6500 });
+    }
+    showInfoViaToastCustom(message: string) {
+        this.service.add({ key: 'tst', severity: 'info', summary: 'Info Message', detail: message, life: 6500 });
     }
 
     showErrorViaToast() {
