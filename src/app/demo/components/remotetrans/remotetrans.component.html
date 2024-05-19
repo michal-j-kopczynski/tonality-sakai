@@ -134,8 +134,26 @@
             </p-panel>
         </div>
 
+
+
+
         <div class="card">     
-            <p-panel header="Transcription divided by time" [toggleable]="true" class="line-height-3 m-0">
+            <p-panel header="Notes" [toggleable]="true" class="line-height-3 m-0">
+                <p>{{ transcriptionNotesData }}</p>
+                <div class="flex flex-wrap gap-2">
+                    <button pButton pRipple type="button" label="Regenerate notes" class="p-button-raised" (click)="regenerate_notes()"></button>
+                </div>    
+            </p-panel>
+        </div>  
+
+        <div class="card">     
+            <p-panel header="Subtitles" [toggleable]="true" class="line-height-3 m-0">
+                <p>{{transcription_seconds_data}}</p>
+            </p-panel>
+        </div>
+
+        <div class="card">     
+            <p-panel header="Speaker Diarization" [toggleable]="true" class="line-height-3 m-0">
                 <p>{{transcription_speaker_diarization}}</p>
             </p-panel>
         </div>

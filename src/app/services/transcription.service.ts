@@ -12,6 +12,7 @@ export class TranscriptionService {
   private deleteUrl = `http://${environment.urls.backendURL}/api/delete_transcription/`
   private regenerateapiUrl = `http://${environment.urls.backendURL}/api/regenerate_transcription/`;
   private save_edit_url = `http://${environment.urls.backendURL}/api/save_edited_transcript/`;
+  private regenerateNotesapiUrl = `http://${environment.urls.backendURL}/api/regenerate_notes/`;
 
   constructor(private http: HttpClient) {}
 
@@ -101,5 +102,25 @@ export class TranscriptionService {
     // Make POST request to the Django API
     return this.http.post(this.save_edit_url, requestBody, { headers });
   }
+
+  regenerate_notes(trans_filename: string, uploaded_at: string): Observable<any> {
+    // Get token from localStorage
+    const authToken = localStorage.getItem('authToken');
+    if (!authToken) {
+      throw new Error('No authentication token available.');
+    }
+
+    // Include token in request headers
+    const headers = new HttpHeaders({
+      Authorization: `token ${authToken}`
+    });
+
+    // Define the request body
+    const requestBody = { trans_filename, uploaded_at };
+
+    // Make POST request to the Django API
+    return this.http.post(this.regenerateNotesapiUrl, requestBody, { headers });
+  }
+  
 
 }

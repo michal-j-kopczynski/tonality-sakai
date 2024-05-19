@@ -54,6 +54,8 @@ export class TransListComponent implements OnInit {
     transcription_seconds_data: string = '';
     transcription_speaker_diarization: string = '';
     cookieValue : string = 'default';
+    
+    transcriptionNotesData: string = '';
 
     constructor(private userFileService: UserFileService, 
         private transcriptionService: TranscriptionService,
@@ -185,6 +187,51 @@ export class TransListComponent implements OnInit {
         }
     }
 
+    regenerate_notes(): void {
+        console.log('Regenerating notes...');
+        if (this.selectedTranscription.id) {
+            this.showInfoViaToastCustom("Your notes are being regenerated...")
+            
+            
+              
+                this.transcriptionService.regenerate_notes(this.selectedTranscription.trans_filename, this.selectedTranscription.uploaded_at).subscribe(
+                    (response) => {
+                        console.log('Notes response generated successfully:', response);
+                        // Handle any further logic after successful synchronous response
+                        this.taskService.setTaskId(response.task_id);
+                        console.log(this.taskService.taskId);
+                        this.taskService.pollTaskStatus().subscribe(
+                            (taskStatusResponse) => {
+                                console.log('Task status response:', taskStatusResponse);
+                                // Handle task status response here
+                                if(taskStatusResponse.status == "completed")
+                                {
+                                    console.log('Loading message popup...');
+                                    this.showSuccessViaToastCustom("Your notes are ready!");
+                                    this.transcriptionNotesData = taskStatusResponse.result
+                                    this.fetchTranscriptions();
+                                    
+                                }
+                            },
+                            (error) => {
+                                console.error('Error polling task status:', error);
+                                // Handle error cases
+                            }
+                        );
+                    },
+                    (error) => {
+                        console.error('Error generating transcription:', error);
+                        // Handle error cases
+                    }
+                );
+            
+        } else {
+            console.error('No audio file selected or transcription name is empty');
+            this.showErrorViaToast();
+        }
+    }
+
+
     onGlobalFilter(filterValue: string) {
         filterValue = filterValue.trim().toLowerCase();
         this.filteredTransData = this.transData.filter((transcription: any) =>
@@ -221,6 +268,7 @@ export class TransListComponent implements OnInit {
         this.transcription_seconds_data = this.selectedTranscription.transcript_seconds;
         this.transcription_speaker_diarization = this.selectedTranscription.speaker_diarization;
         this.transcriptionsummaryData = this.getCurrentTransSummary();
+        this.transcriptionNotesData = this.getCurrentTransNotes();
     }
 
 
@@ -303,6 +351,10 @@ export class TransListComponent implements OnInit {
     getCurrentTransSummary(): string {
         return this.selectedTranscription.summary;
     }
+    getCurrentTransNotes(): string {
+        return this.selectedTranscription.notes;
+    }
+    
     save_edited_transcript() {
         console.error('saving...');
         this.transcriptionService.save_edited_transcript(

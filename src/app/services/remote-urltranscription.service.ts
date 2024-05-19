@@ -12,6 +12,7 @@ export class RemoteURLTranscriptionService {
   private remotetranscriptionListUrl = `http://${environment.urls.backendURL}/api/get_user_remote_transcriptions/`;
   private deleteUrl = `http://${environment.urls.backendURL}/api/delete_remote_transcription/`
   private regenerateapiUrl = `http://${environment.urls.backendURL}/api/regenerate_remote_transcription_remote_url/`;
+  private regenerateNotesRemoteapiUrl = `http://${environment.urls.backendURL}/api/regenerate_remote_notes_remote_url/`;
 
   constructor(private http: HttpClient) {}
 
@@ -81,6 +82,25 @@ export class RemoteURLTranscriptionService {
 
     // Make POST request to the Django API
     return this.http.post(this.regenerateapiUrl, requestBody, { headers });
+  }
+
+  regenerate_notes_remote(remoteurl: string, trans_name: string): Observable<any> {
+    // Get token from localStorage
+    const authToken = localStorage.getItem('authToken');
+    if (!authToken) {
+      throw new Error('No authentication token available.');
+    }
+
+    // Include token in request headers
+    const headers = new HttpHeaders({
+      Authorization: `token ${authToken}`
+    });
+
+    // Define the request body
+    const requestBody = { remoteurl, trans_name };
+
+    // Make POST request to the Django API
+    return this.http.post(this.regenerateNotesRemoteapiUrl, requestBody, { headers });
   }
 
 }

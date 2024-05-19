@@ -28,7 +28,7 @@ export class RemotetransComponent {
     transcriptionsummaryData: string = ''; //can be updated and with data binding automatically shown
     transcription_seconds_data: string = '';
     transcription_speaker_diarization: string = '';
-
+    transcriptionNotesData: string = '';
 
     //crud
     items: MenuItem[] = [];
@@ -174,6 +174,52 @@ regenerate_summary(): void {
     }
 }
 
+
+regenerate_notes(): void {
+    console.log('Regenerating notes...');
+    if (this.selectedTranscription.id) {
+        this.showInfoViaToastCustom("Your notes are being regenerated...")
+        
+        
+          
+            this.transcriptionService.regenerate_notes_remote(this.selectedTranscription.remoteurl, this.selectedTranscription.trans_name).subscribe(
+                (response) => {
+                    console.log('Notes response generated successfully:', response);
+                    // Handle any further logic after successful synchronous response
+                    this.taskService.setTaskId(response.task_id);
+                    console.log(this.taskService.taskId);
+                    this.taskService.pollTaskStatus().subscribe(
+                        (taskStatusResponse) => {
+                            console.log('Task status response:', taskStatusResponse);
+                            // Handle task status response here
+                            if(taskStatusResponse.status == "completed")
+                            {
+                                console.log('Loading message popup...');
+                                this.showSuccessViaToastCustom("Your notes are ready!");
+                                this.transcriptionNotesData = taskStatusResponse.result
+                                this.fetchTranscriptions();
+                                
+                            }
+                        },
+                        (error) => {
+                            console.error('Error polling task status:', error);
+                            // Handle error cases
+                        }
+                    );
+                },
+                (error) => {
+                    console.error('Error generating transcription:', error);
+                    // Handle error cases
+                }
+            );
+        
+    } else {
+        console.error('No audio file selected or transcription name is empty');
+        this.showErrorViaToast();
+    }
+}
+
+
   onGlobalFilter(filterValue: string) {
     filterValue = filterValue.trim().toLowerCase();
     this.filteredTransData = this.transData.filter((transcription: any) =>
@@ -191,8 +237,11 @@ playAudio(audioFile: any, transcription: any) {
     this.playDialogVisible = true; // Show the play dialog
     this.selectedTranscription = transcription;
 
+
+    this.transcription_seconds_data = this.selectedTranscription.transcript_seconds;
     this.transcription_speaker_diarization = this.selectedTranscription.speaker_diarization;
     this.transcriptionsummaryData = this.getCurrentTransSummary();
+    this.transcriptionNotesData = this.getCurrentTransNotes();
 }
 
 
@@ -233,6 +282,9 @@ getCurrentTransSummary(): string {
     return this.selectedTranscription.summary;
 }
 
+getCurrentTransNotes(): string {
+    return this.selectedTranscription.notes;
+}
 
   // asynchronous messages
 
