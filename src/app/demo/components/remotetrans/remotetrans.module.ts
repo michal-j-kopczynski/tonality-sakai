@@ -19,7 +19,8 @@ import { ToastModule } from 'primeng/toast';
 import { InputTextModule } from 'primeng/inputtext';
 import { FileUploadModule } from 'primeng/fileupload';
 import { DropdownModule } from "primeng/dropdown";
-
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { HtmlToPlainPipe } from 'src/app/pipes/html-to-plain.pipe';
 
 @NgModule({
     imports: [
@@ -39,6 +40,8 @@ import { DropdownModule } from "primeng/dropdown";
         InputTextModule,
         FileUploadModule,
         DropdownModule,
+        AngularEditorModule,
+        HtmlToPlainPipe,
         
         
     ],

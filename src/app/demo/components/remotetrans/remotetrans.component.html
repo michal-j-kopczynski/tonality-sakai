@@ -71,7 +71,7 @@
                         <td>{{ transcription.remote_title }}</td>
                         <td>{{ transcription.trans_name }}</td>
                         <td>{{ transcription.uploaded_at }}</td>
-                        <td>{{ transcription.transcript | slice:0:200 }}</td>
+                        <td>{{ transcription.transcript | slice:0:200 | htmlToPlain }}</td>
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-play" class="p-button-rounded p-button-success mr-2" (click)="playAudio(audioFile, transcription)"></button>
@@ -110,7 +110,8 @@
         <!-- Move the card with p-panel here -->
         <div class="card">
             <p-panel header="Transkrypcja" [toggleable]="true" class="line-height-3 m-0">
-                <p>{{ getCurrentTrans() }}</p>
+                <p [innerHTML]="getCurrentTranshtml()"></p>
+                <!-- <p>{{ getCurrentTrans() }}</p> -->
 
             </p-panel>
         </div>
@@ -134,6 +135,12 @@
             </p-panel>
         </div>
 
+        <div class="card">     
+            <p-panel header="Editor" [toggleable]="true" class="line-height-3 m-0">
+                    <angular-editor [placeholder]="'Enter text here ....'" [(ngModel)] ="htmlContent" [config]="editorConfig"></angular-editor>
+                    <button pButton pRipple type="button" label="Save edit" class="p-button-raised" (click)="save_edited_transcript_remote()"></button>
+            </p-panel>
+        </div>
 
 
 

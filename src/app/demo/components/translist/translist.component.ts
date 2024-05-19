@@ -93,10 +93,10 @@ export class TransListComponent implements OnInit {
             },
         ];
         
-        console.log(this.cookieValue)
+        //console.log(this.cookieValue)
         //this.cookieService.set('Test', 'Hello World');
-        this.cookieValue = this.cookieService.get('Test2');
-        console.log(this.cookieValue)
+        //this.cookieValue = this.cookieService.get('Test2');
+        //console.log(this.cookieValue)
     }
 
     fetchAudioFiles(): void {
@@ -156,7 +156,7 @@ export class TransListComponent implements OnInit {
                         // Handle any further logic after successful synchronous response
                         this.taskService.setTaskId(response.task_id);
                         console.log(this.taskService.taskId);
-                        this.taskService.pollTaskStatus().subscribe(
+                        this.taskService.pollTaskStatus(response.task_id).subscribe(
                             (taskStatusResponse) => {
                                 console.log('Task status response:', taskStatusResponse);
                                 // Handle task status response here
@@ -200,7 +200,7 @@ export class TransListComponent implements OnInit {
                         // Handle any further logic after successful synchronous response
                         this.taskService.setTaskId(response.task_id);
                         console.log(this.taskService.taskId);
-                        this.taskService.pollTaskStatus().subscribe(
+                        this.taskService.pollTaskStatus(response.task_id).subscribe(
                             (taskStatusResponse) => {
                                 console.log('Task status response:', taskStatusResponse);
                                 // Handle task status response here
@@ -264,6 +264,7 @@ export class TransListComponent implements OnInit {
         this.selectedAudioFile = audioFile; // Set the selected audio file for playing
         this.playDialogVisible = true; // Show the play dialog
         this.selectedTranscription = transcription;
+
         this.htmlContent=this.getCurrentTrans()
         this.transcription_seconds_data = this.selectedTranscription.transcript_seconds;
         this.transcription_speaker_diarization = this.selectedTranscription.speaker_diarization;
@@ -304,7 +305,7 @@ export class TransListComponent implements OnInit {
                         // Handle any further logic after successful synchronous response
                         this.taskService.setTaskId(response.task_id);
                         console.log(this.taskService.taskId);
-                        this.taskService.pollTaskStatus().subscribe(
+                        this.taskService.pollTaskStatus(response.task_id).subscribe(
                             (taskStatusResponse) => {
                                 console.log('Task status response:', taskStatusResponse);
                                 // Handle task status response here
@@ -433,9 +434,9 @@ export class TransListComponent implements OnInit {
           defaultFontSize: '',
           fonts: [
             {class: 'arial', name: 'Arial'},
-            {class: 'times-new-roman', name: 'Times New Roman'},
-            {class: 'calibri', name: 'Calibri'},
-            {class: 'comic-sans-ms', name: 'Comic Sans MS'}
+            //{class: 'times-new-roman', name: 'Times New Roman'},
+            //{class: 'calibri', name: 'Calibri'},
+            //{class: 'comic-sans-ms', name: 'Comic Sans MS'}
           ],
           
         uploadWithCredentials: false,

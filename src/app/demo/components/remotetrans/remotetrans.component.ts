@@ -6,7 +6,11 @@ import { TaskService } from 'src/app/services/task.service';
 import { Message, MessageService } from 'primeng/api';
 
 //for embedding yt video
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl, SafeHtml } from '@angular/platform-browser';
+
+//editor
+import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { AudioService } from 'src/app/components/my-component/AudioPlayerComponent/audio-player-component/audio.service'
 
 @Component({
   selector: 'app-remotetrans',
@@ -45,17 +49,28 @@ export class RemotetransComponent {
     safe_url: SafeResourceUrl;
 
 
+    //editor
+    htmlContent:any="There was an error. Please try again later..." //text in editor
+   // htmlContent:any=""
+    seconds:number =0
+    lines: any;
+
     constructor(private userFileService: UserFileService, 
       private transcriptionService: RemoteURLTranscriptionService,
       private taskService: TaskService,
       private service: MessageService,
-      public sanitizer: DomSanitizer,) { 
+      public sanitizer: DomSanitizer,
+      private data: AudioService,) { 
       this.selectedTranscription = ""
   }
 
   ngOnInit(): void {
     this.fetchTranscriptions();
-    this.safe_url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/izGwDsrQ1eQ');   
+    this.safe_url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/izGwDsrQ1eQ');
+    this.data.currentMessage.subscribe(message => {
+        this.seconds = message;
+        //this.changeColor(); // Wywołanie funkcji w tym samym komponencie po zmianie wartości seconds
+      });
   }
 
     generateRemoteTranscription(transcriptionName: string): void {
@@ -72,7 +87,7 @@ export class RemotetransComponent {
                       // Handle any further logic after successful synchronous response
                       this.taskService.setTaskId(response.task_id);
                       console.log(this.taskService.taskId);
-                      this.taskService.pollTaskStatus().subscribe(
+                      this.taskService.pollTaskStatus(response.task_id).subscribe(
                           (taskStatusResponse) => {
                               console.log('Task status response:', taskStatusResponse);
                               // Handle task status response here
@@ -143,7 +158,7 @@ regenerate_summary(): void {
                     // Handle any further logic after successful synchronous response
                     this.taskService.setTaskId(response.task_id);
                     console.log(this.taskService.taskId);
-                    this.taskService.pollTaskStatus().subscribe(
+                    this.taskService.pollTaskStatus(response.task_id).subscribe(
                         (taskStatusResponse) => {
                             console.log('Task status response:', taskStatusResponse);
                             // Handle task status response here
@@ -188,7 +203,7 @@ regenerate_notes(): void {
                     // Handle any further logic after successful synchronous response
                     this.taskService.setTaskId(response.task_id);
                     console.log(this.taskService.taskId);
-                    this.taskService.pollTaskStatus().subscribe(
+                    this.taskService.pollTaskStatus(response.task_id).subscribe(
                         (taskStatusResponse) => {
                             console.log('Task status response:', taskStatusResponse);
                             // Handle task status response here
@@ -237,7 +252,7 @@ playAudio(audioFile: any, transcription: any) {
     this.playDialogVisible = true; // Show the play dialog
     this.selectedTranscription = transcription;
 
-
+    this.htmlContent=this.getCurrentTrans()
     this.transcription_seconds_data = this.selectedTranscription.transcript_seconds;
     this.transcription_speaker_diarization = this.selectedTranscription.speaker_diarization;
     this.transcriptionsummaryData = this.getCurrentTransSummary();
@@ -315,5 +330,58 @@ showSuccessViaToastUpload() {
 showWarnViaToast() {
     this.service.add({ key: 'tst', severity: 'warn', summary: 'Warn Message', detail: 'Succesfully deleted transcription' });
 }
+
+editorConfig: AngularEditorConfig = {
+    editable: true,
+      spellcheck: true,
+      height: 'auto',
+      minHeight: '0',
+      maxHeight: 'auto',
+      width: 'auto',
+      minWidth: '0',
+      translate: 'yes',
+      enableToolbar: true,
+      showToolbar: true,
+      placeholder: 'Enter text here...',
+      defaultParagraphSeparator: '',
+      defaultFontName: '',
+      defaultFontSize: '',
+      fonts: [
+        {class: 'arial', name: 'Arial'},
+        //{class: 'times-new-roman', name: 'Times New Roman'},
+        //{class: 'calibri', name: 'Calibri'},
+        //{class: 'comic-sans-ms', name: 'Comic Sans MS'}
+      ],
+      
+    uploadWithCredentials: false,
+    sanitize: true,
+    toolbarPosition: 'top',
+    toolbarHiddenButtons: [
+      ['bold', 'italic'],
+      ['fontSize']
+    ]
+};
+
+save_edited_transcript_remote() {
+    console.error('saving...');
+    this.transcriptionService.save_edited_transcript_remote(
+        this.selectedTranscription.trans_name, 
+        this.selectedTranscription.uploaded_at, 
+        this.htmlContent
+    ).subscribe(
+        response => {
+            console.log('Save successful:', response);
+            this.showSuccessViaToastCustom("Save successful");
+        },
+        error => {
+            console.error('Error saving:', error);
+        }
+    );
+}
+
+getCurrentTranshtml(): SafeHtml {
+    const htmlContent = this.selectedTranscription.transcript;
+    return this.sanitizer.bypassSecurityTrustHtml(htmlContent);
+  }
 
 }

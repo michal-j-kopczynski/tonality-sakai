@@ -17,17 +17,18 @@ export class TaskService {
     this.taskId = taskId;
   }
 
-  checkTaskStatus(): Observable<any> {
-    return this.http.get(`http://${environment.urls.backendURL}/api/check_task_status/${this.taskId}`);
+  checkTaskStatus(taskId: string): Observable<any> {
+    return this.http.get(`http://${environment.urls.backendURL}/api/check_task_status/${taskId}`);
   }
 
-  pollTaskStatus(): Observable<any> {
+  pollTaskStatus(taskId?: string): Observable<any> {
+    const idToUse = taskId || this.taskId;
     return timer(0, this.pollingIntervalMs).pipe(
       switchMap(() => {
         console.log('Polling for task status...'); // Log a message when polling starts
-        return this.checkTaskStatus();
+        return this.checkTaskStatus(idToUse);
       }),
       takeWhile(response => response.status !== 'completed', true) // Stop polling when task is completed
     );
-  }
+}
 }
