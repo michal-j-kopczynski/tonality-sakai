@@ -57,6 +57,10 @@ export class TransListComponent implements OnInit {
     
     transcriptionNotesData: string = '';
 
+    //questions and answers
+    question: string = '';
+    answer: string = '';
+
     constructor(private userFileService: UserFileService, 
         private transcriptionService: TranscriptionService,
         private taskService: TaskService,
@@ -486,4 +490,55 @@ export class TransListComponent implements OnInit {
    this.htmlContent=this.lines
 
   }
+
+
+  onSubmitQuestion() {
+    this.processQuestion(this.question);
+  }
+
+  
+
+  processQuestion(question: string): void {
+    console.log('processing question...');
+    if (this.selectedTranscription.id && this.selectedTranscription.trans_filename) {
+        this.showInfoViaToastCustom("Your question is being processed...")
+        
+            this.transcriptionService.ask_question(this.selectedTranscription.trans_filename, this.selectedTranscription.uploaded_at, question).subscribe(
+                (response) => {
+                    console.log('working...:', response);
+                    // Handle any further logic after successful synchronous response
+                    this.taskService.setTaskId(response.task_id);
+                    console.log(this.taskService.taskId);
+                    this.taskService.pollTaskStatus(response.task_id).subscribe(
+                        (taskStatusResponse) => {
+                            console.log('Task status response:', taskStatusResponse);
+                            // Handle task status response here
+                            if(taskStatusResponse.status == "completed")
+                            {
+                                console.log('Loading message popup...');
+                                this.showSuccessViaToastCustom("Answer was generated succesfully!");
+                                this.answer = taskStatusResponse.result
+                                //this.fetchTranscriptions();
+                                
+                            }
+                        },
+                        (error) => {
+                            console.error('Error polling task status:', error);
+                            // Handle error cases
+                        }
+                    );
+                },
+                (error) => {
+                    console.error('Error generating transcription:', error);
+                    // Handle error cases
+                }
+            );
+        
+    } else {
+        console.error('Error');
+        this.showErrorViaToast();
+    }
+}
+
+
 }

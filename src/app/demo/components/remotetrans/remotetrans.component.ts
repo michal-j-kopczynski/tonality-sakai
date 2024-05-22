@@ -34,6 +34,11 @@ export class RemotetransComponent {
     transcription_speaker_diarization: string = '';
     transcriptionNotesData: string = '';
 
+    //questions and answers
+    question: string = '';
+    answer: string = '';
+
+
     //crud
     items: MenuItem[] = [];
     cardMenu: MenuItem[] = [];
@@ -257,6 +262,7 @@ playAudio(audioFile: any, transcription: any) {
     this.transcription_speaker_diarization = this.selectedTranscription.speaker_diarization;
     this.transcriptionsummaryData = this.getCurrentTransSummary();
     this.transcriptionNotesData = this.getCurrentTransNotes();
+    
 }
 
 
@@ -383,5 +389,56 @@ getCurrentTranshtml(): SafeHtml {
     const htmlContent = this.selectedTranscription.transcript;
     return this.sanitizer.bypassSecurityTrustHtml(htmlContent);
   }
+
+
+  onSubmitQuestion() {
+    this.processQuestion(this.question);
+  }
+
+  
+
+  processQuestion(question: string): void {
+    console.log('processing question...');
+    if (this.selectedTranscription.id && this.selectedTranscription.trans_name) {
+        console.error(this.remote_url)
+        this.showInfoViaToastCustom("Your question is being processed...")
+        
+            this.transcriptionService.ask_question(this.selectedTranscription.trans_name, this.selectedTranscription.uploaded_at, question).subscribe(
+                (response) => {
+                    console.log('working...:', response);
+                    // Handle any further logic after successful synchronous response
+                    this.taskService.setTaskId(response.task_id);
+                    console.log(this.taskService.taskId);
+                    this.taskService.pollTaskStatus(response.task_id).subscribe(
+                        (taskStatusResponse) => {
+                            console.log('Task status response:', taskStatusResponse);
+                            // Handle task status response here
+                            if(taskStatusResponse.status == "completed")
+                            {
+                                console.log('Loading message popup...');
+                                this.showSuccessViaToastCustom("Answer was generated succesfully!");
+                                this.answer = taskStatusResponse.result
+                                //this.fetchTranscriptions();
+                                
+                            }
+                        },
+                        (error) => {
+                            console.error('Error polling task status:', error);
+                            // Handle error cases
+                        }
+                    );
+                },
+                (error) => {
+                    console.error('Error generating transcription:', error);
+                    // Handle error cases
+                }
+            );
+        
+    } else {
+        console.error('No audio file selected or transcription name is empty');
+        this.showErrorViaToast();
+    }
+}
+
 
 }

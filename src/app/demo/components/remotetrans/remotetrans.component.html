@@ -159,6 +159,21 @@
             </p-panel>
         </div>
 
+        
+        <div class="card">
+            <form (ngSubmit)="onSubmitQuestion()" #transcriptionForm="ngForm">
+                <p-panel header="Ask a question about the transcription" [toggleable]="true" class="line-height-3 m-0">
+                    <textarea rows="8" cols="240" placeholder="Your question" pInputTextarea name="question" [(ngModel)]="question" required></textarea>
+                    <button type="submit" pButton pRipple [disabled]="!transcriptionForm.valid">Ask</button>
+                </p-panel>
+            </form>
+            
+            <p-panel header="Answer" [toggleable]="true" class="line-height-3 m-0">
+                <p>{{ answer }}</p>
+            </p-panel>
+        </div>
+                
+         
         <div class="card">     
             <p-panel header="Speaker Diarization" [toggleable]="true" class="line-height-3 m-0">
                 <p>{{transcription_speaker_diarization}}</p>

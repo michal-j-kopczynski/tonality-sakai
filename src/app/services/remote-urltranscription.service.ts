@@ -14,7 +14,7 @@ export class RemoteURLTranscriptionService {
   private regenerateapiUrl = `http://${environment.urls.backendURL}/api/regenerate_remote_transcription_remote_url/`;
   private regenerateNotesRemoteapiUrl = `http://${environment.urls.backendURL}/api/regenerate_remote_notes_remote_url/`;
   private save_edit_url = `http://${environment.urls.backendURL}/api/save_edited_transcript_remote/`;
-
+  private questionAPI = `http://${environment.urls.backendURL}/api/ask_question/`;
 
   constructor(private http: HttpClient) {}
 
@@ -122,6 +122,26 @@ export class RemoteURLTranscriptionService {
 
     // Make POST request to the Django API
     return this.http.post(this.save_edit_url, requestBody, { headers });
+  }
+
+  ask_question(trans_name: string, uploaded_at: string, question: string): Observable<any> {
+    // Get token from localStorage
+    const authToken = localStorage.getItem('authToken');
+    if (!authToken) {
+      throw new Error('No authentication token available.');
+    }
+
+    // Include token in request headers
+    const headers = new HttpHeaders({
+      Authorization: `token ${authToken}`
+    });
+
+    let type_data: String = "remotelist";
+    // Define the request body
+    const requestBody = { trans_name, uploaded_at, question, type_data };
+
+    // Make POST request to the Django API
+    return this.http.post(this.questionAPI, requestBody, { headers });
   }
 
 }

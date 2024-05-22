@@ -13,6 +13,7 @@ export class TranscriptionService {
   private regenerateapiUrl = `http://${environment.urls.backendURL}/api/regenerate_transcription/`;
   private save_edit_url = `http://${environment.urls.backendURL}/api/save_edited_transcript/`;
   private regenerateNotesapiUrl = `http://${environment.urls.backendURL}/api/regenerate_notes/`;
+  private questionAPI = `http://${environment.urls.backendURL}/api/ask_question/`;
 
   constructor(private http: HttpClient) {}
 
@@ -120,6 +121,26 @@ export class TranscriptionService {
 
     // Make POST request to the Django API
     return this.http.post(this.regenerateNotesapiUrl, requestBody, { headers });
+  }
+
+  ask_question(trans_filename: string, uploaded_at: string, question: string): Observable<any> {
+    // Get token from localStorage
+    const authToken = localStorage.getItem('authToken');
+    if (!authToken) {
+      throw new Error('No authentication token available.');
+    }
+
+    // Include token in request headers
+    const headers = new HttpHeaders({
+      Authorization: `token ${authToken}`
+    });
+
+    let type_data: String = "translist";
+    // Define the request body
+    const requestBody = { trans_filename, uploaded_at, question, type_data };
+
+    // Make POST request to the Django API
+    return this.http.post(this.questionAPI, requestBody, { headers });
   }
   
 
