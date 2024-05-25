@@ -7,13 +7,13 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class TranscriptionService {
-  private apiUrl = `http://${environment.urls.backendURL}/api/generate_transcription/`;
-  private transcriptionListUrl = `http://${environment.urls.backendURL}/api/get_user_transcriptions/`;
-  private deleteUrl = `http://${environment.urls.backendURL}/api/delete_transcription/`
-  private regenerateapiUrl = `http://${environment.urls.backendURL}/api/regenerate_transcription/`;
-  private save_edit_url = `http://${environment.urls.backendURL}/api/save_edited_transcript/`;
-  private regenerateNotesapiUrl = `http://${environment.urls.backendURL}/api/regenerate_notes/`;
-  private questionAPI = `http://${environment.urls.backendURL}/api/ask_question/`;
+  private apiUrl = `https://${environment.urls.backendURL}/api/generate_transcription/`;
+  private transcriptionListUrl = `https://${environment.urls.backendURL}/api/get_user_transcriptions/`;
+  private deleteUrl = `https://${environment.urls.backendURL}/api/delete_transcription/`
+  private regenerateapiUrl = `https://${environment.urls.backendURL}/api/regenerate_transcription/`;
+  private save_edit_url = `https://${environment.urls.backendURL}/api/save_edited_transcript/`;
+  private regenerateNotesapiUrl = `https://${environment.urls.backendURL}/api/regenerate_notes/`;
+  private questionAPI = `https://${environment.urls.backendURL}/api/ask_question/`;
 
   constructor(private http: HttpClient) {}
 

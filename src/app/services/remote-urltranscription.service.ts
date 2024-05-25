@@ -8,13 +8,13 @@ import { environment } from 'src/environments/environment';
 })
 export class RemoteURLTranscriptionService {
 
-  private apiUrl = `http://${environment.urls.backendURL}/api/generate_transcription_remote_url/`;
-  private remotetranscriptionListUrl = `http://${environment.urls.backendURL}/api/get_user_remote_transcriptions/`;
-  private deleteUrl = `http://${environment.urls.backendURL}/api/delete_remote_transcription/`
-  private regenerateapiUrl = `http://${environment.urls.backendURL}/api/regenerate_remote_transcription_remote_url/`;
-  private regenerateNotesRemoteapiUrl = `http://${environment.urls.backendURL}/api/regenerate_remote_notes_remote_url/`;
-  private save_edit_url = `http://${environment.urls.backendURL}/api/save_edited_transcript_remote/`;
-  private questionAPI = `http://${environment.urls.backendURL}/api/ask_question/`;
+  private apiUrl = `https://${environment.urls.backendURL}/api/generate_transcription_remote_url/`;
+  private remotetranscriptionListUrl = `https://${environment.urls.backendURL}/api/get_user_remote_transcriptions/`;
+  private deleteUrl = `https://${environment.urls.backendURL}/api/delete_remote_transcription/`
+  private regenerateapiUrl = `https://${environment.urls.backendURL}/api/regenerate_remote_transcription_remote_url/`;
+  private regenerateNotesRemoteapiUrl = `https://${environment.urls.backendURL}/api/regenerate_remote_notes_remote_url/`;
+  private save_edit_url = `https://${environment.urls.backendURL}/api/save_edited_transcript_remote/`;
+  private questionAPI = `https://${environment.urls.backendURL}/api/ask_question/`;
 
   constructor(private http: HttpClient) {}
 

@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = `http://${environment.urls.backendURL}/api`;
+  private apiUrl = `https://${environment.urls.backendURL}/api`;
   private token: string | null = localStorage.getItem('authToken');
 
   constructor(private http: HttpClient) {}

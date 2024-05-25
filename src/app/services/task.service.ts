@@ -18,7 +18,7 @@ export class TaskService {
   }
 
   checkTaskStatus(taskId: string): Observable<any> {
-    return this.http.get(`http://${environment.urls.backendURL}/api/check_task_status/${taskId}`);
+    return this.http.get(`https://${environment.urls.backendURL}/api/check_task_status/${taskId}`);
   }
 
   pollTaskStatus(taskId?: string): Observable<any> {
