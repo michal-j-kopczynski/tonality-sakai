@@ -7,8 +7,8 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class UserFileService {
-  private apiUrl = `http://${environment.urls.backendURL}/api/get_user_audio_files/`;
-  private deleteUrl = `http://${environment.urls.backendURL}/api/delete_file/`
+  private apiUrl = `https://${environment.urls.backendURL}/api/get_user_audio_files/`;
+  private deleteUrl = `https://${environment.urls.backendURL}/api/delete_file/`
 
   constructor(private http: HttpClient) { 
     if (environment.production) {
@@ -51,7 +51,7 @@ export class UserFileService {
   }
 
   getAudioFile(filename: string) {
-    return this.http.get(`http://${environment.urls.backendURL}/api/get_audio_file/${filename}`, { responseType: 'blob' });
+    return this.http.get(`https://${environment.urls.backendURL}/api/get_audio_file/${filename}`, { responseType: 'blob' });
   }
 
 }
