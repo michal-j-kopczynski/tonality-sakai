@@ -60,6 +60,17 @@ export class TransListComponent implements OnInit {
     //questions and answers
     question: string = '';
     answer: string = '';
+    // Define an array to hold the context options
+    contextOptions = [
+        { label: 'Transcriptions', value: 'transcriptions' },
+        { label: 'Subtitles', value: 'subtitles' },
+        { label: 'Speaker Diarisation', value: 'speakerDiarisation' }
+    ];
+
+    // Property to store the selected context
+    selectedContext: string;
+
+
 
     constructor(private userFileService: UserFileService, 
         private transcriptionService: TranscriptionService,
@@ -503,7 +514,7 @@ export class TransListComponent implements OnInit {
     if (this.selectedTranscription.id && this.selectedTranscription.trans_filename) {
         this.showInfoViaToastCustom("Your question is being processed...")
         
-            this.transcriptionService.ask_question(this.selectedTranscription.trans_filename, this.selectedTranscription.uploaded_at, question).subscribe(
+            this.transcriptionService.ask_question(this.selectedTranscription.trans_filename, this.selectedTranscription.uploaded_at, question, this.selectedContext).subscribe(
                 (response) => {
                     console.log('working...:', response);
                     // Handle any further logic after successful synchronous response

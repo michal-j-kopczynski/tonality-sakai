@@ -215,6 +215,20 @@
         <div class="card">
             <form (ngSubmit)="onSubmitQuestion()" #transcriptionForm="ngForm">
                 <p-panel header="Ask a question about the transcription" [toggleable]="true" class="line-height-3 m-0">
+                    <div class="row">
+                        <div class="col-12 mb-2 lg:col-4 lg:mb-0">
+                            <p-dropdown 
+                                [options]="contextOptions" 
+                                [(ngModel)]="selectedContext" 
+                                name="selectedContext" 
+                                placeholder="Select context" 
+                                [showClear]="true" 
+                                ngModel 
+                                #selectedContextModel="ngModel" 
+                                required>
+                            </p-dropdown>
+                        </div>
+                    </div>
                     <textarea rows="8" cols="240" placeholder="Your question" pInputTextarea name="question" [(ngModel)]="question" required></textarea>
                     <button type="submit" pButton pRipple [disabled]="!transcriptionForm.valid">Ask</button>
                 </p-panel>

@@ -37,6 +37,17 @@ export class RemotetransComponent {
     //questions and answers
     question: string = '';
     answer: string = '';
+    // Define an array to hold the context options
+    contextOptions = [
+        { label: 'Transcriptions', value: 'transcriptions' },
+        { label: 'Subtitles', value: 'subtitles' },
+        { label: 'Speaker Diarisation', value: 'speakerDiarisation' }
+    ];
+
+    // Property to store the selected context
+    selectedContext: string;
+
+
 
 
     //crud
@@ -403,7 +414,7 @@ getCurrentTranshtml(): SafeHtml {
         console.error(this.remote_url)
         this.showInfoViaToastCustom("Your question is being processed...")
         
-            this.transcriptionService.ask_question(this.selectedTranscription.trans_name, this.selectedTranscription.uploaded_at, question).subscribe(
+            this.transcriptionService.ask_question(this.selectedTranscription.trans_name, this.selectedTranscription.uploaded_at, question, this.selectedContext).subscribe(
                 (response) => {
                     console.log('working...:', response);
                     // Handle any further logic after successful synchronous response

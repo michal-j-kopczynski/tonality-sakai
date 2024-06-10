@@ -123,7 +123,7 @@ export class TranscriptionService {
     return this.http.post(this.regenerateNotesapiUrl, requestBody, { headers });
   }
 
-  ask_question(trans_filename: string, uploaded_at: string, question: string): Observable<any> {
+  ask_question(trans_filename: string, uploaded_at: string, question: string, selectedContext: string): Observable<any> {
     // Get token from localStorage
     const authToken = localStorage.getItem('authToken');
     if (!authToken) {
@@ -137,7 +137,7 @@ export class TranscriptionService {
 
     let type_data: String = "translist";
     // Define the request body
-    const requestBody = { trans_filename, uploaded_at, question, type_data };
+    const requestBody = { trans_filename, uploaded_at, question, type_data, selectedContext };
 
     // Make POST request to the Django API
     return this.http.post(this.questionAPI, requestBody, { headers });

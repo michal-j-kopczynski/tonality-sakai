@@ -124,7 +124,7 @@ export class RemoteURLTranscriptionService {
     return this.http.post(this.save_edit_url, requestBody, { headers });
   }
 
-  ask_question(trans_name: string, uploaded_at: string, question: string): Observable<any> {
+  ask_question(trans_name: string, uploaded_at: string, question: string, selectedContext: string): Observable<any> {
     // Get token from localStorage
     const authToken = localStorage.getItem('authToken');
     if (!authToken) {
@@ -138,7 +138,7 @@ export class RemoteURLTranscriptionService {
 
     let type_data: String = "remotelist";
     // Define the request body
-    const requestBody = { trans_name, uploaded_at, question, type_data };
+    const requestBody = { trans_name, uploaded_at, question, type_data, selectedContext };
 
     // Make POST request to the Django API
     return this.http.post(this.questionAPI, requestBody, { headers });
